@@ -1,0 +1,190 @@
+.main {
+    left: 50%;
+    position: absolute;
+    margin: 0 0 0 -500px;
+    width: 1000px;
+    height: 500px;
+}
+
+.parent {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.north {
+    height: 50px;
+    width: 100%;
+    background: red;
+}
+
+.west {
+    width: 125px;
+    height: 500px;
+    background: #272A27;
+    float: left;
+}
+
+.center {
+    width: 600px;
+    height: 500px;
+    float: left;
+}
+
+.east {
+    width: 275px;
+    height: 500px;
+    background: cyan;
+    float: left;
+}
+
+.south {
+    height: 50px;
+    width: 100%;
+    background: orange;
+    float: left;
+}
+
+.button {
+    width: 80px;
+    height: 25px;
+    float: left;
+    margin-left: 23px;
+    margin-top: 20px;
+    background: #0F1313;
+    color: #AEAEAE;
+    border-radius: 5px;
+    text-align: center;
+    font-family: "Times New Roman", sans-serif;
+    font-size: 15px;
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.formButtonCancel:active, .formButtonAdd:active, .button:active {
+    background: deepskyblue;
+    opacity: 0.7;
+}
+
+.formButtonCancel:hover, .formButtonAdd:hover, .button:hover {
+    box-shadow: 0 0 20px 0 deepskyblue;
+    text-shadow: 0 0 1px 0 deepskyblue;
+}
+
+.buttonsPanel {
+    width: 125px;
+    height: 400px;
+    margin-top: 10px;
+}
+
+.form {
+    position: absolute;
+    z-index: 1;
+    width: 300px;
+    height: 200px;
+    background: #272A27;
+    left: 27%;
+    top: 20%;
+    color: grey;
+    display: none;
+}
+
+.textField {
+    width: 120px;
+    height: 20px;
+    border-radius: 2px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 12px;
+}
+
+.formLabel {
+    float: left;
+    margin-top: 14px;
+    margin-left: 6px;
+}
+
+.formButtonCancel {
+    float: left;
+    width: 80px;
+    height: 25px;
+    padding-top: 5px;
+    margin-top: 80px;
+    margin-left: 20px;
+    background: #0F1313;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.formButtonAdd {
+    float: left;
+    width: 120px;
+    height: 25px;
+    padding-top: 5px;
+    margin-top: 80px;
+    margin-left: 50px;
+    background: #0F1313;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    background: grey;
+    z-index: 0;
+}
+
+.employee {
+    width: 100%;
+    height: 30px;
+    background: #56575C;
+    cursor: pointer;
+}
+
+.employee:hover {
+    background: cadetblue;
+}
+
+.tableTitle {
+    width: 100%;
+    height: 30px;
+    background: #272A27;
+}
+
+.tableTitleId {
+    margin-left: 140px;
+    margin-top: 6px;
+    float: left;
+    text-shadow: 1px -1px 5px cyan;
+}
+
+.tableTitleName {
+    margin-right: 125px;
+    margin-top: 6px;
+    float: right;
+    text-shadow: 1px -1px 5px cyan;
+}
+
+.employeeId {
+    width: 50%;
+    height: 30px;
+    text-align: center;
+    box-shadow: inset -1px 0 0 0 black;
+    float: left;
+}
+
+.employeeName {
+    width: 50%;
+    height: 30px;
+    text-align: center;
+    float: left;
+}
+
+.selected {
+    background: #356B91 !important;
+}
