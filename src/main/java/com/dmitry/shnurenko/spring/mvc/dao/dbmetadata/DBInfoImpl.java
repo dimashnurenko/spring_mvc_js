@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 @Component("query")
 public class DBInfoImpl implements DBInfo {
 
-    private static final String PATH_TO_QUERIES = "/db/metadata/queries.txt";
+    private static final String PATH_TO_QUERIES = "/database/queries.txt";
 
     private static final Logger LOGGER = Logger.getLogger(DBInfoImpl.class);
 

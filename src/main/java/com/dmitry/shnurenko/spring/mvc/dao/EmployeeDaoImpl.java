@@ -16,8 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.GET_ALL_EMPLOYEES;
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.SAVE_EMPLOYEE;
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.*;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.Employee.ID;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.Employee.NAME;
 import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
@@ -95,7 +94,22 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public void delete(@Nonnull Employee employee) {
+    public boolean delete(@Nonnegative int id) {
+        Connection con = SqlLiteConnection.get();
 
+        try {
+            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(DELETE_EMPLOYEE));
+            pstmt.setInt(1, id);
+
+            pstmt.execute();
+
+            return true;
+        } catch (SQLException e) {
+            close(con);
+
+            return false;
+        } finally {
+            close(con);
+        }
     }
 }

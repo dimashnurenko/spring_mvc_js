@@ -21,6 +21,6 @@ public interface EmployeeDao {
 
     void update(@Nonnull Employee employee);
 
-    void delete(@Nonnull Employee employee);
+    boolean delete(@Nonnegative int id);
 
 }

@@ -3,8 +3,9 @@
 <head lang="en">
     <c:url value="/resources/css/style.css" var="css"/>
     <c:url value="/resources/js/index.js" var="js"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <c:url value="/resources/js/jquery-2.1.3.js" var="jquery"/>
     <link href="${css}" rel="stylesheet">
+    <script src="${jquery}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
     <title>spring_js</title>
 </head>

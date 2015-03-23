@@ -4,10 +4,7 @@ import com.dmitry.shnurenko.spring.mvc.dao.EmployeeDao;
 import com.dmitry.shnurenko.spring.mvc.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -31,7 +28,8 @@ public class MainController {
     @RequestMapping(value = "add/employee",
                     method = RequestMethod.POST,
                     produces = "application/json")
-    public @ResponseBody Employee addEmployee(@RequestParam("id") int id, @RequestParam("name") String name) throws SQLException {
+    public @ResponseBody Employee addEmployee(@RequestParam("id") int id,
+                                              @RequestParam("name") String name) throws SQLException {
         Employee employee = new Employee(id, name);
 
         boolean isSaved = employeeDao.save(employee);
@@ -48,5 +46,17 @@ public class MainController {
                     produces = "application/json")
     public @ResponseBody List<Employee> getAll() {
         return employeeDao.getAllEmployees();
+    }
+
+    @RequestMapping(value = "delete/employee{id}",
+                    method = RequestMethod.GET,
+                    produces = "application/json")
+    public void removeEmployee(@PathVariable("id") int id) throws SQLException {
+
+        boolean isRemoved = employeeDao.delete(id);
+
+        if (!isRemoved) {
+            throw new SQLException("Employee can't be deleted...");
+        }
     }
 }
