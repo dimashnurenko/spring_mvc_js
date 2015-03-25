@@ -11,16 +11,14 @@ import java.util.List;
  */
 public interface EmployeeDao {
 
-    @Nonnull
-    List<Employee> getAllEmployees();
+    @Nonnull List<Employee> getAllEmployees();
 
-    @Nonnull
-    Employee getById(@Nonnegative int id);
+    @Nonnull Employee getById(@Nonnegative int id);
 
     boolean save(@Nonnull Employee employee);
 
     void update(@Nonnull Employee employee);
 
-    boolean delete(@Nonnegative int id);
+    Employee delete(@Nonnull Employee employee);
 
 }

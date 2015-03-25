@@ -4,7 +4,10 @@ import com.dmitry.shnurenko.spring.mvc.dao.EmployeeDao;
 import com.dmitry.shnurenko.spring.mvc.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,15 +51,14 @@ public class MainController {
         return employeeDao.getAllEmployees();
     }
 
-    @RequestMapping(value = "delete/employee{id}",
+    @RequestMapping(value = "delete/employee",
                     method = RequestMethod.GET,
                     produces = "application/json")
-    public void removeEmployee(@PathVariable("id") int id) throws SQLException {
+    public @ResponseBody Employee removeEmployee(@RequestParam("id") int id,
+                                                 @RequestParam("name") String name) throws SQLException {
 
-        boolean isRemoved = employeeDao.delete(id);
+        Employee employee = new Employee(id, name);
 
-        if (!isRemoved) {
-            throw new SQLException("Employee can't be deleted...");
-        }
+        return employeeDao.delete(employee);
     }
 }

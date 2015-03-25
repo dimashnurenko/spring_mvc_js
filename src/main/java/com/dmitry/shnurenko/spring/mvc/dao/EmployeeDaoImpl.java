@@ -94,22 +94,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public boolean delete(@Nonnegative int id) {
+    public Employee delete(@Nonnull Employee employee) {
         Connection con = SqlLiteConnection.get();
 
         try {
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(DELETE_EMPLOYEE));
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, employee.getId());
 
             pstmt.execute();
 
-            return true;
         } catch (SQLException e) {
             close(con);
-
-            return false;
         } finally {
             close(con);
         }
+
+        return employee;
     }
 }

@@ -81,8 +81,8 @@ function init() {
     };
 
     FormDialog.prototype.onEditFormValuesChanged = function () {
-        var selectedId = mainWidget.selectedElement.getId();
-        var selectedName = mainWidget.selectedElement.getName();
+        var selectedId = mainWidget.selectedWidget.getId();
+        var selectedName = mainWidget.selectedWidget.getName();
 
         var id = $("#number").val();
         var name = $("#name").val();
@@ -114,11 +114,11 @@ function init() {
             mainWidget.onDeleteClicked();
         });
 
-        this.selectedElement = null;
+        this.selectedWidget = null;
 
         this.id = null;
         this.name = null;
-        this.elements = $.makeArray();
+        this.elements = {};
     }
 
     MainWidget.prototype.onAddBtnClicked = function () {
@@ -139,8 +139,8 @@ function init() {
 
         $("#formAddBtn").text("Update");
 
-        $("#number").val(mainWidget.selectedElement.getId());
-        $("#name").val(mainWidget.selectedElement.getName());
+        $("#number").val(mainWidget.selectedWidget.getId());
+        $("#name").val(mainWidget.selectedWidget.getName());
 
         formDialog.isAddFormOpened = false;
 
@@ -148,42 +148,71 @@ function init() {
     };
 
     MainWidget.prototype.onDeleteClicked = function () {
-        var id = mainWidget.selectedElement.getId();
+        var id = mainWidget.selectedWidget.getId();
+        var name = mainWidget.selectedWidget.getName();
 
-        $.get("delete/employee", mainWidget.selectedElement.getId(), "json")
-            .done(function () {
-                mainWidget.elements.splice(id);
+        var element = {id: id, name: name};
 
-                mainWidget.addEmployees(mainWidget.elements);
-            }).fail();
+        $.ajax({
+            type: 'GET',
+            url: 'delete/employee',
+            data: {id: id, name: name},
+            dataType: 'json',
+            success: success(element)
+        });
+
+        function success(element) {
+            for (var i in mainWidget.elements) {
+                var elementWidget = mainWidget.elements[i];
+
+                if (elementWidget.getId() == element.id) {
+                    delete mainWidget.elements[element.id];
+
+                    break;
+                }
+            }
+
+            $("#elements").empty();
+
+            mainWidget.addEmployees(mainWidget.elements);
+        }
     };
 
     MainWidget.prototype.addEmployees = function (data) {
         for (var i in data) {
-            var employee = data[i];
+            var entity = data[i];
 
-            var elementWidget = new ElementWidget(employee);
+            var hasEmployee = entity.employee;
 
-            elementWidget.setId(employee.id);
-            elementWidget.setName(employee.name);
+            var elementWidget = new ElementWidget(hasEmployee ? hasEmployee : entity);
 
-            mainWidget.elements.push(elementWidget);
+            var id = hasEmployee ? hasEmployee.id : entity.id;
+            var name = hasEmployee ? hasEmployee.name : entity.name;
+
+            $("#id" + id).text(id);
+            $("#name" + id).text(name);
+
+            mainWidget.elements[entity.id] = elementWidget;
         }
     };
 
     MainWidget.prototype.onElementSelected = function (id) {
-        for (var i in mainWidget.elements) {
-            var element = mainWidget.elements[i];
+        var elements = mainWidget.elements;
 
-            if (element.getId() == id) {
-                mainWidget.selectedElement = element;
+        for (var i in elements) {
+            var employeeWidget = elements[i];
 
-                element.select(id);
+            var employeeId = employeeWidget.employee.id;
+
+            if (employeeId == id) {
+                mainWidget.selectedWidget = employeeWidget;
+
+                employeeWidget.select(id);
 
                 continue;
             }
 
-            element.unSelect(element.getId());
+            employeeWidget.unSelect(employeeId);
         }
     };
 
@@ -197,7 +226,7 @@ function init() {
     function ElementWidget(employee) {
         this.employee = employee;
 
-        $("#table").append('<div id=' + employee.id + ' class="employee">');
+        $("#elements").append('<div id=' + employee.id + ' class="employee">');
 
         $("#" + employee.id)
             .append('<div id="id' + employee.id + '" class="employeeId">')
@@ -208,14 +237,6 @@ function init() {
                 MainWidget.prototype.onElementSelected(employee.id);
             });
     }
-
-    ElementWidget.prototype.setId = function (id) {
-        $('#id' + this.employee.id).text(id);
-    };
-
-    ElementWidget.prototype.setName = function (name) {
-        $('#name' + this.employee.id).text(name);
-    };
 
     ElementWidget.prototype.getId = function () {
         return $('#id' + this.employee.id).text();

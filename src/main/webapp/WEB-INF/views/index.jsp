@@ -44,6 +44,10 @@
                     <label class="tableTitleId">ID</label>
                     <label class="tableTitleName">NAME</label>
                 </div>
+
+                <div id="elements">
+
+                </div>
             </div>
         </div>
 
