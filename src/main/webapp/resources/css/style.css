@@ -188,3 +188,19 @@
 .selected {
     background: #356B91 !important;
 }
+
+.search {
+    width: 100%;
+    height: 60px;
+    background: #272A27;
+    color: #AEAEAE;
+}
+
+.searchField {
+    margin-top: 28px;
+    margin-left: 6px;
+}
+
+.searchLabel {
+    margin-left: 15px;
+}

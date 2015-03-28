@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -34,17 +33,12 @@ public class MainController {
     @RequestMapping(value = "add/employee",
                     method = RequestMethod.POST,
                     produces = "application/json")
-    public @ResponseBody Employee addEmployee(@RequestParam("id") int id,
-                                              @RequestParam("name") String name) throws SQLException {
+    public @ResponseBody Employee addEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
         Employee employee = entityFactory.createEmployee(id, name);
 
-        boolean isSaved = employeeDao.save(employee);
+        employeeDao.save(employee);
 
-        if (isSaved) {
-            return employee;
-        } else {
-            throw new SQLException("Can't save employee to database...");
-        }
+        return employee;
     }
 
     @RequestMapping(value = "get/all",
@@ -57,8 +51,7 @@ public class MainController {
     @RequestMapping(value = "delete/employee",
                     method = RequestMethod.GET,
                     produces = "application/json")
-    public @ResponseBody Employee removeEmployee(@RequestParam("id") int id,
-                                                 @RequestParam("name") String name) throws SQLException {
+    public @ResponseBody Employee removeEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
 
         Employee employee = entityFactory.createEmployee(id, name);
 
@@ -68,8 +61,7 @@ public class MainController {
     @RequestMapping(value = "update/employee",
                     method = RequestMethod.GET,
                     produces = "application/json")
-    public @ResponseBody Employee updateEmployee(@RequestParam("id") int id,
-                                                 @RequestParam("name") String name) throws SQLException {
+    public @ResponseBody Employee updateEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
 
         return employeeDao.update(entityFactory.createEmployee(id, name));
     }

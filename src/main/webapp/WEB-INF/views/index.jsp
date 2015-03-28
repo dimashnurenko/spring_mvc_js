@@ -54,7 +54,10 @@
         </div>
 
         <div class="east">
-
+            <div id="search" class="search">
+                <label class="searchLabel">Search:</label>
+                <input id="searchField" type="text" class="searchField">
+            </div>
         </div>
 
         <div class="south">
