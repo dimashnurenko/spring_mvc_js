@@ -1,6 +1,7 @@
 package com.dmitry.shnurenko.spring.mvc.dao;
 
 import com.dmitry.shnurenko.spring.mvc.entity.Employee;
+import com.sun.istack.internal.Nullable;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -13,11 +14,11 @@ public interface EmployeeDao {
 
     @Nonnull List<Employee> getAllEmployees();
 
-    @Nonnull Employee getById(@Nonnegative int id);
+    @Nullable Employee getById(@Nonnegative int id);
 
     boolean save(@Nonnull Employee employee);
 
-    void update(@Nonnull Employee employee);
+    Employee update(@Nonnull Employee employee);
 
     Employee delete(@Nonnull Employee employee);
 

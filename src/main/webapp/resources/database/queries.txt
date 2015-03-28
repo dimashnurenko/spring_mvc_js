@@ -1,5 +1,5 @@
-employee.get.by.id=SELECT * FROM Employee where id=(?);
+employee.get.by.id=SELECT * FROM employee where id=(?);
 employee.save=INSERT INTO employee (id,name) VALUES(?,?);
-employee.update=UPDATE Employee SET name=?,earning=?, address_id=?,post=? WHERE id=?;
+employee.update=UPDATE employee SET name=? WHERE id=?;
 employee.delete=DELETE FROM employee WHERE id=?;
 employee.get.all=SELECT * FROM employee;

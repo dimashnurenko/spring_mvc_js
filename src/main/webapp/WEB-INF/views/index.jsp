@@ -3,9 +3,11 @@
 <head lang="en">
     <c:url value="/resources/css/style.css" var="css"/>
     <c:url value="/resources/js/index.js" var="js"/>
-    <c:url value="/resources/js/jquery-2.1.3.js" var="jquery"/>
+    <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
+    <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
     <link href="${css}" rel="stylesheet">
     <script src="${jquery}" type="text/javascript"></script>
+    <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
     <title>spring_js</title>
 </head>

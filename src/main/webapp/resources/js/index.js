@@ -28,8 +28,14 @@ function init() {
         this.name = "";
 
         $("#formAddBtn").click(function () {
-            if (formDialog.isAddBtnActive) {
+            var isAddBtn = $("#formAddBtn").text() === "Add Employee";
+
+            if (formDialog.isAddBtnActive && isAddBtn) {
                 formDialog.onAddClicked();
+            }
+
+            if (formDialog.isUpdateBtnActive && !isAddBtn) {
+                formDialog.onUpdateClicked();
             }
         });
 
@@ -69,6 +75,31 @@ function init() {
             });
 
         formDialog.form.style.display = "none";
+    };
+
+    FormDialog.prototype.onUpdateClicked = function () {
+        var id = $("#number").val();
+        var name = $("#name").val();
+
+        var element = {id: id, name: name};
+
+        $.ajax({
+            type: 'GET',
+            url: 'update/employee',
+            data: element,
+            dataType: 'json',
+            success: success(element)
+        });
+
+        function success(element) {
+            mainWidget.elements[element.id].employee.name = element.name;
+
+            $("#elements").empty();
+
+            mainWidget.addEmployees(mainWidget.elements);
+
+            formDialog.hideDialog();
+        }
     };
 
     FormDialog.prototype.onAddFormValuesChanged = function () {
@@ -137,9 +168,13 @@ function init() {
     MainWidget.prototype.onEditBtnClicked = function () {
         formDialog.form.style.display = "block";
 
+        var number = $("#number");
+
+        number.prop("disabled", true);
+
         $("#formAddBtn").text("Update");
 
-        $("#number").val(mainWidget.selectedWidget.getId());
+        number.val(mainWidget.selectedWidget.getId());
         $("#name").val(mainWidget.selectedWidget.getName());
 
         formDialog.isAddFormOpened = false;
@@ -192,7 +227,9 @@ function init() {
             $("#id" + id).text(id);
             $("#name" + id).text(name);
 
-            mainWidget.elements[entity.id] = elementWidget;
+            mainWidget.elements[id] = elementWidget;
+
+            mainWidget.onElementSelected(id);
         }
     };
 

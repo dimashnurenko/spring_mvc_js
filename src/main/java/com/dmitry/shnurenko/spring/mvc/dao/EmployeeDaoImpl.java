@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,10 +62,29 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return employees;
     }
 
-    @Nonnull
+    @Nullable
     @Override
     public Employee getById(@Nonnegative int id) {
-        return null;
+        Connection con = SqlLiteConnection.get();
+
+        try {
+            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(GET_EMPLOYEE_BY_ID));
+
+            pstmt.setInt(1, id);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            int employeeId = resultSet.getInt(ID.toString());
+            String name = resultSet.getString(NAME.toString());
+
+            return entityFactory.createEmployee(employeeId, name);
+        } catch (SQLException e) {
+            close(con);
+
+            return null;
+        } finally {
+            close(con);
+        }
     }
 
     @Override
@@ -89,8 +109,22 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public void update(@Nonnull Employee employee) {
+    public Employee update(@Nonnull Employee employee) {
+        Connection con = SqlLiteConnection.get();
 
+        try {
+            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(UPDATE_EMPLOYEE));
+            pstmt.setString(1, employee.getName());
+            pstmt.setInt(2, employee.getId());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            close(con);
+        } finally {
+            close(con);
+        }
+
+        return employee;
     }
 
     @Override
