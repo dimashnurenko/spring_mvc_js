@@ -58,6 +58,10 @@
                 <label class="searchLabel">Search:</label>
                 <input id="searchField" type="text" class="searchField">
             </div>
+
+            <div id="searchResult" class="searchResult">
+
+            </div>
         </div>
 
         <div class="south">

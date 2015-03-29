@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @Controller
 @RequestMapping("/")
 public class MainController {
@@ -49,8 +51,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "delete/employee",
-                    method = RequestMethod.GET,
-                    produces = "application/json")
+                    method = RequestMethod.DELETE,
+                    produces = APPLICATION_JSON_VALUE)
     public @ResponseBody Employee removeEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
 
         Employee employee = entityFactory.createEmployee(id, name);

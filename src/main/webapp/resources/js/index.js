@@ -145,6 +145,10 @@ function init() {
             mainWidget.onDeleteClicked();
         });
 
+        $("#searchField").keyup(function () {
+            mainWidget.searchElement();
+        });
+
         this.selectedWidget = null;
 
         this.id = null;
@@ -252,6 +256,83 @@ function init() {
             employeeWidget.unSelect(employeeId);
         }
     };
+
+    MainWidget.prototype.searchElement = function () {
+        var searchResultPanel = $("#searchResult");
+
+        searchResultPanel.empty();
+
+        var value = $("#searchField").val();
+
+        if (value === "") {
+            return;
+        }
+
+        var divId = 0;
+
+        for (var id in mainWidget.elements) {
+            var employee = mainWidget.elements[id].employee;
+
+            if (!isNaN(value)) {
+                var employeeId = employee.id;
+
+                if (isIdMatch(value.toString(), employeeId.toString())) {
+
+                    new SearchingElement(++divId, employeeId);
+                }
+            } else {
+                var employeeName = employee.name;
+
+                if (isStringMatch(value.toString(), employeeName.toString())) {
+                    new SearchingElement(++divId, employeeName)
+                }
+            }
+        }
+
+        function isStringMatch(inputString, generalString) {
+            var length = inputString.length;
+
+            var subString = generalString.substring(0, length);
+
+            return inputString.indexOf(subString) + 1;
+        }
+
+        function isIdMatch(inputId, generalId) {
+            return generalId.indexOf(inputId) + 1;
+        }
+    };
+
+    function SearchingElement(id, valueToSet) {
+        this.id = id;
+
+        $("#searchResult").append('<div id="_' + id + '" class="foundedElement">');
+
+        var searchingElement = $('#_' + id);
+
+        searchingElement.click(function () {
+            for (var index in mainWidget.elements) {
+                var employeeWidget = mainWidget.elements[index];
+
+                if (isNaN(valueToSet)) {
+                    var name = employeeWidget.employee.name;
+
+                    if (valueToSet === name) {
+                        mainWidget.onElementSelected(employeeWidget.employee.id);
+
+                        return;
+                    }
+                }
+
+                var id = employeeWidget.employee.id;
+
+                if (valueToSet == id) {
+                    mainWidget.onElementSelected(id);
+                }
+            }
+        });
+
+        searchingElement.text(valueToSet);
+    }
 
     //---- employee entity---
     function Employee(id, name) {
