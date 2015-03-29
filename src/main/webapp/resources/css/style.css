@@ -102,6 +102,7 @@
 
 .formLabel {
     float: left;
+    width: 130px;
     margin-top: 14px;
     margin-left: 6px;
 }
@@ -111,7 +112,7 @@
     width: 80px;
     height: 25px;
     padding-top: 5px;
-    margin-top: 80px;
+    margin-top: 50px;
     margin-left: 20px;
     background: #0F1313;
     border-radius: 5px;
@@ -124,7 +125,7 @@
     width: 120px;
     height: 25px;
     padding-top: 5px;
-    margin-top: 80px;
+    margin-top: 50px;
     margin-left: 50px;
     background: #0F1313;
     border-radius: 5px;
@@ -147,7 +148,7 @@
 }
 
 .employee:hover {
-    background: cadetblue;
+    background: #173530;
 }
 
 .tableTitle {
@@ -157,31 +158,39 @@
 }
 
 .tableTitleId {
+    margin-left: 95px;
+    margin-top: 6px;
+    float: left;
+    text-shadow: 1px -1px 5px cyan;
+}
+
+.tableTitleFirstName {
     margin-left: 140px;
     margin-top: 6px;
     float: left;
     text-shadow: 1px -1px 5px cyan;
 }
 
-.tableTitleName {
-    margin-right: 125px;
+.tableTitleLastName {
+    margin-right: 60px;
     margin-top: 6px;
     float: right;
     text-shadow: 1px -1px 5px cyan;
 }
 
 .employeeId {
-    width: 50%;
+    width: 200px;
     height: 30px;
     text-align: center;
-    box-shadow: inset -1px 0 0 0 black;
+    box-shadow: inset -1px 0 0 0 #272A27;
     float: left;
 }
 
 .employeeName {
-    width: 50%;
+    width: 200px;
     height: 30px;
     text-align: center;
+    box-shadow: inset -1px 0 0 0 #272A27;
     float: left;
 }
 
@@ -225,6 +234,10 @@
     color: #AEAEAE;
     text-align: center;
     cursor: pointer;
+}
+
+.foundedElement:hover {
+    background: #173530;
 }
 
 .foundedElement:active {

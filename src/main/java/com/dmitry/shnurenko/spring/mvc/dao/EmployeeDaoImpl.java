@@ -18,17 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.*;
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.Employee.ID;
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.Employee.NAME;
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.EmployeeTable.*;
 import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
 /**
+ * The class contains methods which allows save,delete,update employees in database.
+ *
  * @author Dmitry Shnurenko
  */
 @Component("employeeDao")
 public class EmployeeDaoImpl implements EmployeeDao {
 
-    private final DBInfo dbInfo;
+    private final DBInfo        dbInfo;
     private final EntityFactory entityFactory;
 
     @Autowired
@@ -37,6 +38,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         this.entityFactory = entityFactory;
     }
 
+    /** {inheritDoc} */
     @Nonnull
     @Override
     public List<Employee> getAllEmployees() {
@@ -50,8 +52,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
             ResultSet resultSet = pstmt.executeQuery();
 
             while (resultSet.next()) {
-                employees.add(entityFactory.createEmployee(resultSet.getInt(ID.toString()),
-                                                           resultSet.getString(NAME.toString())));
+                employees.add(entityFactory.createManager(resultSet.getInt(ID.toString()),
+                                                          resultSet.getString(FIRST_NAME.toString()),
+                                                          resultSet.getString(LAST_NAME.toString())));
             }
         } catch (SQLException e) {
             close(con);
@@ -62,6 +65,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return employees;
     }
 
+    /** {inheritDoc} */
     @Nullable
     @Override
     public Employee getById(@Nonnegative int id) {
@@ -75,9 +79,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
             ResultSet resultSet = pstmt.executeQuery();
 
             int employeeId = resultSet.getInt(ID.toString());
-            String name = resultSet.getString(NAME.toString());
+            String firstName = resultSet.getString(FIRST_NAME.toString());
+            String lastName = resultSet.getString(LAST_NAME.toString());
 
-            return entityFactory.createEmployee(employeeId, name);
+            return entityFactory.createManager(employeeId, firstName, lastName);
         } catch (SQLException e) {
             close(con);
 
@@ -87,6 +92,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
     }
 
+    /** {inheritDoc} */
     @Override
     public boolean save(@Nonnull Employee employee) {
         Connection con = SqlLiteConnection.get();
@@ -94,7 +100,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
         try {
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(SAVE_EMPLOYEE));
             pstmt.setInt(1, employee.getId());
-            pstmt.setString(2, employee.getName());
+            pstmt.setString(2, employee.getFirstName());
+            pstmt.setString(3, employee.getLastName());
 
             pstmt.execute();
 
@@ -108,14 +115,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
     }
 
+    /** {inheritDoc} */
+    @Nonnull
     @Override
     public Employee update(@Nonnull Employee employee) {
         Connection con = SqlLiteConnection.get();
 
         try {
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(UPDATE_EMPLOYEE));
-            pstmt.setString(1, employee.getName());
-            pstmt.setInt(2, employee.getId());
+            pstmt.setString(1, employee.getFirstName());
+            pstmt.setString(2,employee.getLastName());
+            pstmt.setInt(3, employee.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -127,6 +137,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return employee;
     }
 
+    /** {inheritDoc} */
+    @Nonnull
     @Override
     public Employee delete(@Nonnull Employee employee) {
         Connection con = SqlLiteConnection.get();

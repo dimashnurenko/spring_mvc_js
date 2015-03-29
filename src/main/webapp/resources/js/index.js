@@ -55,7 +55,11 @@ function init() {
             }
         }
 
-        $("#name").keyup(function () {
+        $("#firstName").keyup(function () {
+            onValuesChanged();
+        });
+
+        $("#lastName").keyup(function () {
             onValuesChanged();
         });
     }
@@ -65,13 +69,17 @@ function init() {
 
     FormDialog.prototype.onAddClicked = function () {
         var id = $("#number").val();
-        var name = $("#name").val();
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
 
-        var data = {id: id, name: name};
+        var data = {id: id, firstName: firstName, lastName: lastName};
 
-        $.post("add/employee", data, "json")
-            .done(mainWidget.addEmployees([data])).fail(function () {
-                throw new Error("Can't save...")
+        $.post("add/employee", data)
+            .done(function (data) {
+                mainWidget.addEmployees([data]);
+            })
+            .fail(function (error) {
+                alert(error);
             });
 
         formDialog.form.style.display = "none";
@@ -79,20 +87,16 @@ function init() {
 
     FormDialog.prototype.onUpdateClicked = function () {
         var id = $("#number").val();
-        var name = $("#name").val();
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
 
-        var element = {id: id, name: name};
+        var element = {id: id, firstName: firstName, lastName: lastName};
 
-        $.ajax({
-            type: 'GET',
-            url: 'update/employee',
-            data: element,
-            dataType: 'json',
-            success: success(element)
-        });
+        $.get("update/employee", element).done(success(element));
 
         function success(element) {
-            mainWidget.elements[element.id].employee.name = element.name;
+            mainWidget.elements[element.id].employee.firstName = element.firstName;
+            mainWidget.elements[element.id].employee.lastName = element.lastName;
 
             $("#elements").empty();
 
@@ -104,21 +108,24 @@ function init() {
 
     FormDialog.prototype.onAddFormValuesChanged = function () {
         var number = $("#number").val();
-        var name = $("#name").val();
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
 
-        this.isAddBtnActive = number.length > 0 && name.length > 0;
+        this.isAddBtnActive = number.length > 0 && firstName.length > 0 && lastName.length > 0;
 
         $("#formAddBtn").css("opacity", this.isAddBtnActive ? "1" : "0.4");
     };
 
     FormDialog.prototype.onEditFormValuesChanged = function () {
         var selectedId = mainWidget.selectedWidget.getId();
-        var selectedName = mainWidget.selectedWidget.getName();
+        var selectedFirstName = mainWidget.selectedWidget.getFirstName();
+        var selectedLastName = mainWidget.selectedWidget.getLastName();
 
         var id = $("#number").val();
-        var name = $("#name").val();
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
 
-        this.isUpdateBtnActive = id !== selectedId || name !== selectedName;
+        this.isUpdateBtnActive = id !== selectedId || firstName !== selectedFirstName || lastName !== selectedLastName;
 
         $("#formAddBtn").css("opacity", this.isUpdateBtnActive ? "1" : "0.4");
     };
@@ -158,7 +165,8 @@ function init() {
 
     MainWidget.prototype.onAddBtnClicked = function () {
         $("#number").val("");
-        $("#name").val("");
+        $("#firstName").val("");
+        $("#lastName").val("");
 
         $("#formAddBtn").text("Add Employee");
 
@@ -179,7 +187,8 @@ function init() {
         $("#formAddBtn").text("Update");
 
         number.val(mainWidget.selectedWidget.getId());
-        $("#name").val(mainWidget.selectedWidget.getName());
+        $("#firstName").val(mainWidget.selectedWidget.getFirstName());
+        $("#lastName").val(mainWidget.selectedWidget.getLastName());
 
         formDialog.isAddFormOpened = false;
 
@@ -188,17 +197,12 @@ function init() {
 
     MainWidget.prototype.onDeleteClicked = function () {
         var id = mainWidget.selectedWidget.getId();
-        var name = mainWidget.selectedWidget.getName();
+        var firstName = mainWidget.selectedWidget.getFirstName();
+        var lastName = mainWidget.selectedWidget.getLastName();
 
-        var element = {id: id, name: name};
+        var element = {id: id, firstName: firstName, lastName: lastName};
 
-        $.ajax({
-            type: 'GET',
-            url: 'delete/employee',
-            data: {id: id, name: name},
-            dataType: 'json',
-            success: success(element)
-        });
+        $.get("delete/employee", element).done(success(element));
 
         function success(element) {
             for (var i in mainWidget.elements) {
@@ -226,10 +230,12 @@ function init() {
             var elementWidget = new ElementWidget(hasEmployee ? hasEmployee : entity);
 
             var id = hasEmployee ? hasEmployee.id : entity.id;
-            var name = hasEmployee ? hasEmployee.name : entity.name;
+            var firstName = hasEmployee ? hasEmployee.firstName : entity.firstName;
+            var lastName = hasEmployee ? hasEmployee.lastName : entity.lastName;
 
             $("#id" + id).text(id);
-            $("#name" + id).text(name);
+            $("#firstName" + id).text(firstName);
+            $("#lastName" + id).text(lastName);
 
             mainWidget.elements[id] = elementWidget;
 
@@ -281,7 +287,7 @@ function init() {
                     new SearchingElement(++divId, employeeId);
                 }
             } else {
-                var employeeName = employee.name;
+                var employeeName = employee.firstName;
 
                 if (isStringMatch(value.toString(), employeeName.toString())) {
                     new SearchingElement(++divId, employeeName)
@@ -314,7 +320,7 @@ function init() {
                 var employeeWidget = mainWidget.elements[index];
 
                 if (isNaN(valueToSet)) {
-                    var name = employeeWidget.employee.name;
+                    var name = employeeWidget.employee.firstName;
 
                     if (valueToSet === name) {
                         mainWidget.onElementSelected(employeeWidget.employee.id);
@@ -335,9 +341,10 @@ function init() {
     }
 
     //---- employee entity---
-    function Employee(id, name) {
+    function Employee(id, firstName, lastName) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     //---element widget----
@@ -348,10 +355,9 @@ function init() {
 
         $("#" + employee.id)
             .append('<div id="id' + employee.id + '" class="employeeId">')
-            .append('<div id="name' + employee.id + '" class="employeeName">')
+            .append('<div id="firstName' + employee.id + '" class="employeeName">')
+            .append('<div id="lastName' + employee.id + '" class="employeeName">')
             .click(function () {
-                ElementWidget.prototype.select(employee.id);
-
                 MainWidget.prototype.onElementSelected(employee.id);
             });
     }
@@ -360,8 +366,12 @@ function init() {
         return $('#id' + this.employee.id).text();
     };
 
-    ElementWidget.prototype.getName = function () {
-        return $('#name' + this.employee.id).text();
+    ElementWidget.prototype.getFirstName = function () {
+        return $('#firstName' + this.employee.id).text();
+    };
+
+    ElementWidget.prototype.getLastName = function () {
+        return $('#lastName' + this.employee.id).text();
     };
 
     ElementWidget.prototype.select = function (id) {

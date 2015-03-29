@@ -34,8 +34,12 @@
                         <input id="number" type="text" class="textField">
                     </div>
                     <div>
-                        <label class="formLabel">Employee name:</label>
-                        <input id="name" type="text" class="textField">
+                        <label class="formLabel">First name:</label>
+                        <input id="firstName" type="text" class="textField">
+                    </div>
+                    <div>
+                        <label class="formLabel">Last name:</label>
+                        <input id="lastName" type="text" class="textField">
                     </div>
 
                     <div id="cancel" class="formButtonCancel">Cancel</div>
@@ -44,10 +48,11 @@
 
                 <div class="tableTitle">
                     <label class="tableTitleId">ID</label>
-                    <label class="tableTitleName">NAME</label>
+                    <label class="tableTitleFirstName">FIRST NAME</label>
+                    <label class="tableTitleLastName">LAST NAME</label>
                 </div>
 
-                <div id="elements">
+                <div id="elements" class="elements">
 
                 </div>
             </div>
@@ -56,7 +61,7 @@
         <div class="east">
             <div id="search" class="search">
                 <label class="searchLabel">Search:</label>
-                <input id="searchField" type="text" class="searchField">
+                <input id="searchField" type="text" class="searchField" placeholder="input id or first name">
             </div>
 
             <div id="searchResult" class="searchResult">

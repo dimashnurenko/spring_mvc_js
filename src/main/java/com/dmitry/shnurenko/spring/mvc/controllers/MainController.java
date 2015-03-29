@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/")
 public class MainController {
 
-    private final EmployeeDao employeeDao;
+    private final EmployeeDao   employeeDao;
     private final EntityFactory entityFactory;
 
     @Autowired
@@ -34,9 +34,11 @@ public class MainController {
 
     @RequestMapping(value = "add/employee",
                     method = RequestMethod.POST,
-                    produces = "application/json")
-    public @ResponseBody Employee addEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
-        Employee employee = entityFactory.createEmployee(id, name);
+                    produces = APPLICATION_JSON_VALUE)
+    public @ResponseBody Employee addEmployee(@RequestParam("id") int id,
+                                              @RequestParam("firstName") String firstName,
+                                              @RequestParam("lastName") String lastName) {
+        Employee employee = entityFactory.createManager(id, firstName, lastName);
 
         employeeDao.save(employee);
 
@@ -45,26 +47,33 @@ public class MainController {
 
     @RequestMapping(value = "get/all",
                     method = RequestMethod.GET,
-                    produces = "application/json")
+                    produces = APPLICATION_JSON_VALUE)
     public @ResponseBody List<Employee> getAll() {
         return employeeDao.getAllEmployees();
     }
 
     @RequestMapping(value = "delete/employee",
-                    method = RequestMethod.DELETE,
+                    method = RequestMethod.GET,
                     produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody Employee removeEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
+    public @ResponseBody Employee removeEmployee(@RequestParam("id") int id,
+                                                 @RequestParam("firstName") String firstName,
+                                                 @RequestParam("lastName") String lastName) {
 
-        Employee employee = entityFactory.createEmployee(id, name);
+        Employee employee = entityFactory.createManager(id, firstName, lastName);
 
         return employeeDao.delete(employee);
+
     }
 
     @RequestMapping(value = "update/employee",
                     method = RequestMethod.GET,
-                    produces = "application/json")
-    public @ResponseBody Employee updateEmployee(@RequestParam("id") int id, @RequestParam("name") String name) {
+                    produces = APPLICATION_JSON_VALUE)
+    public @ResponseBody Employee updateEmployee(@RequestParam("id") int id,
+                                                 @RequestParam("firstName") String firstName,
+                                                 @RequestParam("lastName") String lastName) {
 
-        return employeeDao.update(entityFactory.createEmployee(id, name));
+        Employee employee = entityFactory.createManager(id, firstName, lastName);
+
+        return employeeDao.update(employee);
     }
 }

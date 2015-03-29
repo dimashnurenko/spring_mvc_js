@@ -1,32 +1,47 @@
 package com.dmitry.shnurenko.spring.mvc.entity;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 /**
+ * Provides methods which allows change or get information about employee.
+ *
  * @author Dmitry Shnurenko
  */
-public class Employee implements Serializable {
-    private int id;
-    private String name;
+public interface Employee extends Serializable {
 
-    public Employee(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    /**
+     * Gets id of current employee. This id is unique for every employee.
+     *
+     * @return an instance of id
+     */
+    @Nonnegative int getId();
 
-    public int getId() {
-        return id;
-    }
+    /**
+     * Sets id of employee.
+     *
+     * @param id id which need set
+     */
+    void setId(@Nonnegative int id);
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    /** @return value of first name */
+    @Nonnull String getFirstName();
 
-    public String getName() {
-        return name;
-    }
+    /**
+     * Sets first name of employee.
+     *
+     * @param firstName name which need set
+     */
+    void setFirstName(@Nonnull String firstName);
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /** @return value of last name */
+    @Nonnull String getLastName();
+
+    /**
+     * Sets last name of employee.
+     *
+     * @param lastName name which need set
+     */
+    void setLastName(@Nonnull String lastName);
 }
