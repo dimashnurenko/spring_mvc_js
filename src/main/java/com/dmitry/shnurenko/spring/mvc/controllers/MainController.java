@@ -28,7 +28,7 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String printWelcome() {
+    public String showMainPage() {
         return "index";
     }
 

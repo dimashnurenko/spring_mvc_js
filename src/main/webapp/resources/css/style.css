@@ -17,7 +17,8 @@
 .north {
     height: 50px;
     width: 100%;
-    background: red;
+    background: #272A27;
+    border-bottom: 1px solid #173530;
 }
 
 .west {
@@ -53,7 +54,7 @@
     float: left;
     margin-left: 23px;
     margin-top: 20px;
-    background: #0F1313;
+    background: #1C1D20;
     color: #AEAEAE;
     border-radius: 5px;
     text-align: center;
@@ -63,13 +64,13 @@
     cursor: pointer;
 }
 
-.formButtonCancel:active, .formButtonAdd:active, .button:active {
-    background: deepskyblue;
+.formButtonCancel:active, .formButtonAdd:active, .button:active, .registerPanelButton:active {
+    background: #173530;
     opacity: 0.7;
 }
 
-.formButtonCancel:hover, .formButtonAdd:hover, .button:hover {
-    box-shadow: 0 0 20px 0 deepskyblue;
+.formButtonCancel:hover, .formButtonAdd:hover, .button:hover, .registerPanelButton:hover {
+    box-shadow: 0 0 20px 0 #173530;
     text-shadow: 0 0 1px 0 deepskyblue;
 }
 
@@ -114,7 +115,7 @@
     padding-top: 5px;
     margin-top: 50px;
     margin-left: 20px;
-    background: #0F1313;
+    background: #1C1D20;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -127,7 +128,7 @@
     padding-top: 5px;
     margin-top: 50px;
     margin-left: 50px;
-    background: #0F1313;
+    background: #1C1D20;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -254,4 +255,20 @@
 
 ::-webkit-scrollbar-button {
     background-color: #272A27;
+}
+
+.registerPanelButton {
+    width: 80px;
+    height: 25px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 10px;
+    background: #1C1D20;
+    color: #AEAEAE;
+    border-radius: 5px;
+    text-align: center;
+    font-family: "Times New Roman", sans-serif;
+    font-size: 15px;
+    padding-top: 8px;
+    cursor: pointer;
 }

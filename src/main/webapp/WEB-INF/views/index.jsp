@@ -2,24 +2,29 @@
 <html>
 <head lang="en">
     <c:url value="/resources/css/style.css" var="css"/>
+    <c:url value="/resources/css/register.css" var="registerCss"/>
     <c:url value="/resources/js/index.js" var="js"/>
+    <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
     <link href="${css}" rel="stylesheet">
+    <link href="${registerCss}" rel="stylesheet">
     <script src="${jquery}" type="text/javascript"></script>
     <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
+    <script src="${registerJs}" type="text/javascript"></script>
     <title>spring_js</title>
 </head>
 <body>
-<div class="parent">
+<div id="parent" class="parent">
     <div class="main">
         <div class="north">
-
+            <div id="register" class="registerPanelButton">Register</div>
+            <div id="login" class="registerPanelButton">Login</div>
         </div>
 
         <div class="west">
-            <div id="buttons_panel" class="buttonsPanel">
+            <div id="buttons_panel" class="buttonsPanel" hidden="hidden">
                 <div id="add" class="button">Add</div>
                 <div id="edit" class="button">Edit</div>
                 <div id="delete" class="button">Remove</div>
@@ -28,6 +33,7 @@
 
         <div class="center">
             <div id="table" class="table">
+                <%--add employee form--%>
                 <div id="form" class="form">
                     <div>
                         <label class="formLabel">Employee Number:</label>
@@ -45,6 +51,7 @@
                     <div id="cancel" class="formButtonCancel">Cancel</div>
                     <div id="formAddBtn" class="formButtonAdd">Add Employee</div>
                 </div>
+                <%---------------------%>
 
                 <div class="tableTitle">
                     <label class="tableTitleId">ID</label>
@@ -72,8 +79,35 @@
         <div class="south">
 
         </div>
+        <%--register window--%>
+        <div id="modal_form" class="modal_form">
+            <span id="modal_close" class="modal_close">X</span>
+
+            <form class="registerForm">
+                <div class="registerParameterPanel">
+                    <label class="registerLabel">Name:</label>
+                    <input id="name" class="registerTextBox" type="text">
+                </div>
+                <div class="registerParameterPanel">
+                    <label class="registerLabel">Email:</label>
+                    <input id="email" class="registerTextBox" type="text">
+                </div>
+                <div class="registerParameterPanel">
+                    <label class="registerLabel">Password:</label>
+                    <input id="password" class="registerTextBox" type="password">
+                </div>
+                <div class="registerParameterPanel">
+                    <label class="registerLabel">Repeat Password:</label>
+                    <input id="repeatPassword" class="registerTextBox" type="password">
+                </div>
+
+                <input class="registerButton" type="submit" value="Register">
+            </form>
+        </div>
+        <div id="overlay" class="overlay"></div>
     </div>
 </div>
+
 
 </body>
 </html>
