@@ -1,10 +1,11 @@
-package com.dmitry.shnurenko.spring.mvc.dao;
+package com.dmitry.shnurenko.spring.mvc.dao.employee;
 
-import com.dmitry.shnurenko.spring.mvc.entity.Employee;
-import com.sun.istack.internal.Nullable;
+import com.dmitry.shnurenko.spring.mvc.entity.employees.Employee;
+import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface EmployeeDao {
      *
      * @return list which contains employees from database
      */
-    @Nonnull List<Employee> getAllEmployees();
+    @Nonnull List<Employee> getAllEmployees() throws DBException;
 
     /**
      * Gets current employee from database via id.
@@ -27,7 +28,7 @@ public interface EmployeeDao {
      * @param id this id needs to get employee from database. It is a primary key which allows find employee in database
      * @return an instance of {@link Employee}
      */
-    @Nullable Employee getById(@Nonnegative int id);
+    @Nullable Employee getById(@Nonnegative int id) throws DBException;
 
     /**
      * Saves employee to database and returns boolean value which defines saving state.
@@ -35,7 +36,7 @@ public interface EmployeeDao {
      * @param employee employee which need save
      * @return <code>true</code> if employee is saved successfully, and <code>false</code> if exception is thrown
      */
-    boolean save(@Nonnull Employee employee);
+    boolean save(@Nonnull Employee employee) throws DBException;
 
     /**
      * Updates current employee in database.
@@ -43,8 +44,7 @@ public interface EmployeeDao {
      * @param employee employee which need update
      * @return an instance of updated {@link Employee}
      */
-    @Nonnull
-    Employee update(@Nonnull Employee employee);
+    @Nonnull Employee update(@Nonnull Employee employee) throws DBException;
 
     /**
      * Deletes current employee from database.
@@ -52,7 +52,6 @@ public interface EmployeeDao {
      * @param employee employee which need delete
      * @return an instance of deleted {@link Employee}
      */
-    @Nonnull
-    Employee delete(@Nonnull Employee employee);
+    @Nonnull Employee delete(@Nonnull Employee employee) throws DBException;
 
 }

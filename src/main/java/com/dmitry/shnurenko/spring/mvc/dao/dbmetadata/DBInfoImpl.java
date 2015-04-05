@@ -68,7 +68,7 @@ public class DBInfoImpl implements DBInfo {
 
     @Override
     public String getQuery(@Nonnull Queries query) {
-        String value = this.queries.get(query.getKey());
+        String value = this.queries.get(query.getQuery());
 
         if (value == null) {
             throw new NoSuchElementException("key not found. Enter the correct key...");

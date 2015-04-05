@@ -1,7 +1,8 @@
 package com.dmitry.shnurenko.spring.mvc.inject;
 
-import com.dmitry.shnurenko.spring.mvc.entity.Employee;
-import com.dmitry.shnurenko.spring.mvc.entity.Manager;
+import com.dmitry.shnurenko.spring.mvc.entity.access.User;
+import com.dmitry.shnurenko.spring.mvc.entity.employees.Employee;
+import com.dmitry.shnurenko.spring.mvc.entity.employees.Manager;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnegative;
@@ -26,5 +27,18 @@ public class EntityFactory {
     @Nonnull
     public Employee createManager(@Nonnegative int id, @Nonnull String firstName, @Nonnull String lastName) {
         return new Manager(id, firstName, lastName);
+    }
+
+    /**
+     * Creates entity of user using inputting parameters.
+     *
+     * @param login    login which need set to user
+     * @param email    email which need set to user
+     * @param password password  which need set to user
+     * @return an instance of {@link Manager}
+     */
+    @Nonnull
+    public User createUser(@Nonnull String login, @Nonnull String email, @Nonnull String password) {
+        return new User(login, email, password);
     }
 }

@@ -37,7 +37,7 @@
 .east {
     width: 275px;
     height: 500px;
-    background: cyan;
+    background: #272A27;
     float: left;
 }
 
@@ -78,6 +78,7 @@
     width: 125px;
     height: 400px;
     margin-top: 10px;
+    display: none;
 }
 
 .form {
@@ -215,7 +216,7 @@
     color: #AEAEAE;
     padding-left: 6px;
     margin-top: 28px;
-    margin-left: 6px;
+    margin-left: 25px;
 }
 
 .searchLabel {
@@ -226,6 +227,7 @@
     width: 100%;
     height: 100px;
     background: #272A27;
+    border-bottom: 1px solid #173530;
     overflow-y: scroll;
 }
 
@@ -261,7 +263,7 @@
     width: 80px;
     height: 25px;
     float: right;
-    margin-right: 20px;
+    margin-right: 30px;
     margin-top: 10px;
     background: #1C1D20;
     color: #AEAEAE;

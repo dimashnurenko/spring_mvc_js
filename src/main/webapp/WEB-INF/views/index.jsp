@@ -19,12 +19,13 @@
 <div id="parent" class="parent">
     <div class="main">
         <div class="north">
+            <div id="access" hidden="hidden">${access},${login}</div>
             <div id="register" class="registerPanelButton">Register</div>
-            <div id="login" class="registerPanelButton">Login</div>
+            <div id="welcomeUser" class="welcomeUser"></div>
         </div>
 
         <div class="west">
-            <div id="buttons_panel" class="buttonsPanel" hidden="hidden">
+            <div id="buttons_panel" class="buttonsPanel">
                 <div id="add" class="button">Add</div>
                 <div id="edit" class="button">Edit</div>
                 <div id="delete" class="button">Remove</div>
@@ -74,34 +75,48 @@
             <div id="searchResult" class="searchResult">
 
             </div>
+
+            <div class="loginPanel">
+                <form method="post" action="/user/login">
+                    <div class="loginParameterPanel">
+                        <label class="loginLabel">Login:</label>
+                        <input class="registerTextBox, loginTextBox" type="text" placeholder="login">
+                    </div>
+                    <div class="loginParameterPanel">
+                        <label class="loginLabel">Password:</label>
+                        <input class="registerTextBox, loginTextBox" type="password" placeholder="password">
+                    </div>
+
+                    <input class="loginButton" type="submit" value="login">
+                </form>
+            </div>
         </div>
 
         <div class="south">
-
         </div>
         <%--register window--%>
         <div id="modal_form" class="modal_form">
             <span id="modal_close" class="modal_close">X</span>
 
-            <form class="registerForm">
+            <form name="register" class="registerForm" method="post" action="/user/register">
                 <div class="registerParameterPanel">
-                    <label class="registerLabel">Name:</label>
-                    <input id="name" class="registerTextBox" type="text">
+                    <label class="registerLabel">Login:</label>
+                    <input id="name" name="login" class="registerTextBox" type="text">
                 </div>
                 <div class="registerParameterPanel">
-                    <label class="registerLabel">Email:</label>
-                    <input id="email" class="registerTextBox" type="text">
+                    <label id="emailLabel" class="registerLabel">Email:</label>
+                    <input id="email" name="email" class="registerTextBox" type="text">
                 </div>
                 <div class="registerParameterPanel">
                     <label class="registerLabel">Password:</label>
-                    <input id="password" class="registerTextBox" type="password">
+                    <input id="password" name="password" class="registerTextBox" type="password">
                 </div>
                 <div class="registerParameterPanel">
-                    <label class="registerLabel">Repeat Password:</label>
-                    <input id="repeatPassword" class="registerTextBox" type="password">
+                    <label id="repeatPasswordLabel" class="registerLabel">Repeat Password:</label>
+                    <input id="repeatPassword" name="repeatPassword" class="registerTextBox" type="password">
                 </div>
 
-                <input class="registerButton" type="submit" value="Register">
+                <input id="registerButton" class="registerButton" type="submit" value="Register">
             </form>
         </div>
         <div id="overlay" class="overlay"></div>

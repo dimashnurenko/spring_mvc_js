@@ -18,6 +18,25 @@ function init() {
 
     getAllEmployees();
 
+    function getAccess() {
+        var attributes = $("#access").text().toString().split(',');
+
+        var access = attributes[0];
+        var login = attributes[1];
+
+        if (access === "true") {
+            $("#buttons_panel").css("display", "block");
+
+            $("#welcomeUser").text("Hello, " + login);
+
+            $("#login").text("Logout");
+
+            $("#register").remove();
+        }
+    }
+
+    getAccess();
+
     //----form dialog object---
     function FormDialog() {
         this.isAddBtnActive = true;

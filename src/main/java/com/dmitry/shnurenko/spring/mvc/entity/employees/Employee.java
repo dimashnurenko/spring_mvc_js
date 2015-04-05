@@ -1,4 +1,4 @@
-package com.dmitry.shnurenko.spring.mvc.entity;
+package com.dmitry.shnurenko.spring.mvc.entity.employees;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
