@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.rmi.AccessException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.dmitry.shnurenko.spring.mvc.controllers.register.RegisterFormNames.*;
@@ -24,25 +25,29 @@ import static com.dmitry.shnurenko.spring.mvc.controllers.register.RegisterFormN
  * @@author Dmitry Shnurenko
  */
 @Controller
+@SessionAttributes("id")
 @RequestMapping("/user")
 public class RegisterController {
 
-    private final Generator         userIdGenerator;
-    private final MailSenderBuilder googleMailSenderBuilder;
-    private final EntityFactory     entityFactory;
-    private final UserDao           userDao;
-    private final List<String>      uniqueIds;
+    private final Generator           userIdGenerator;
+    private final MailSenderBuilder   googleMailSenderBuilder;
+    private final EntityFactory       entityFactory;
+    private final UserDao             userDao;
+    private final Map<String, String> uniqueIds;
+    private final UserLoginManager    userLoginManager;
 
     @Autowired
     public RegisterController(Generator userIdGenerator,
                               MailSenderBuilder googleMailSenderBuilder,
                               EntityFactory entityFactory,
-                              UserDao userDao) {
+                              UserDao userDao,
+                              UserLoginManager userLoginManager) {
         this.userIdGenerator = userIdGenerator;
         this.googleMailSenderBuilder = googleMailSenderBuilder;
         this.entityFactory = entityFactory;
         this.userDao = userDao;
-        this.uniqueIds = new ArrayList<>();
+        this.userLoginManager = userLoginManager;
+        this.uniqueIds = new HashMap<>();
     }
 
     private String login;
@@ -65,7 +70,7 @@ public class RegisterController {
 
         String uniqueId = userIdGenerator.generate();
 
-        uniqueIds.add(uniqueId);
+        uniqueIds.put(login, uniqueId);
 
         //TODO host and port need change to domain in future
         final String mailContent = "<td><a href=\"http://localhost:8080/user/register/success?id=" + uniqueId + "\">" +
@@ -83,7 +88,8 @@ public class RegisterController {
 
     @RequestMapping("/register/success")
     public String successRegister(@RequestParam("id") String id, RedirectAttributes attributes) throws AccessException {
-        if (!uniqueIds.contains(id)) {
+        if (!uniqueIds.values()
+                      .contains(id)) {
             throw new AccessException("Unique id is not defined... Error authorization...");
         }
 
@@ -97,6 +103,33 @@ public class RegisterController {
 
         attributes.addFlashAttribute("access", "true");
         attributes.addFlashAttribute("login", login);
+
+        return "redirect:/";
+    }
+
+    @RequestMapping("/login")
+    public String login(HttpServletRequest request) {
+        Map<String, String[]> parameters = request.getParameterMap();
+
+        String login = parameters.get(LOGIN.toString())[0];
+        String password = parameters.get(PASSWORD.toString())[0];
+
+        boolean isUserLogin = false;
+        try {
+            isUserLogin = userDao.isUserLogin(login, password);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+
+        if (isUserLogin) {
+            HttpSession session = request.getSession();
+            session.setMaxInactiveInterval(60 * 1000);//30 min
+
+            String id = userIdGenerator.generate();
+            userLoginManager.addId(id);
+
+            session.setAttribute("id", id);
+        }
 
         return "redirect:/";
     }

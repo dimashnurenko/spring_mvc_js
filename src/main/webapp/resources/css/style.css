@@ -44,8 +44,9 @@
 .south {
     height: 50px;
     width: 100%;
-    background: orange;
+    background: #272A27;
     float: left;
+    box-shadow: inset 0 1px 0 0 #173530;
 }
 
 .button {
@@ -78,7 +79,7 @@
     width: 125px;
     height: 400px;
     margin-top: 10px;
-    display: none;
+    display: block;
 }
 
 .form {

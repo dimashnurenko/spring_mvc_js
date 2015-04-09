@@ -26,14 +26,5 @@ $(document).ready(function () {
         );
     });
 
-    $("#login").click(function (event) {
-        $("#emailLabel").remove();
-        $("#repeatPasswordLabel").remove();
-        $("#email").remove();
-        $("#repeatPassword").remove();
-        $("#registerButton").val("Login");
-
-        showDialog(event)
-    });
 });
 

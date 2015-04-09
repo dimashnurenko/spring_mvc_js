@@ -11,31 +11,21 @@ function init() {
     var mainWidget = new MainWidget();
 
     function getAllEmployees() {
-        $.get("get/all", function (data) {
-            mainWidget.addEmployees(data)
-        }, "json").fail();
+        $.ajax({
+            url: "get/all",
+            success: function (data) {
+                mainWidget.addEmployees(data)
+            }
+        });
     }
 
     getAllEmployees();
 
-    function getAccess() {
-        var attributes = $("#access").text().toString().split(',');
-
-        var access = attributes[0];
-        var login = attributes[1];
-
-        if (access === "true") {
-            $("#buttons_panel").css("display", "block");
-
-            $("#welcomeUser").text("Hello, " + login);
-
-            $("#login").text("Logout");
-
-            $("#register").remove();
-        }
-    }
-
-    getAccess();
+    setInterval(function () {
+        $.ajax({
+            url: "/"
+        });
+    }, 10 * 1000);
 
     //----form dialog object---
     function FormDialog() {

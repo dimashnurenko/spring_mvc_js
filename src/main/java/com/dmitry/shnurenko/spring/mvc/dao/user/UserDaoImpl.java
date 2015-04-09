@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.GET_LOGIN_USER;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.SAVE_USER_TO_DB;
 import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
@@ -41,9 +43,31 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             close(con);
 
-            throw new DBException(e,"Can't save user to data base");
+            throw new DBException(e, "Can't save user to data base");
         } finally {
             close(con);
+        }
+    }
+
+    /** {inheritDoc} */
+    @Override
+    public boolean isUserLogin(@Nonnull String login, @Nonnull String password) throws DBException {
+        Connection connection = SqlLiteConnection.get();
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(dbInfo.getQuery(GET_LOGIN_USER));
+            pstmt.setString(1, login);
+            pstmt.setString(2, password);
+
+            ResultSet resultSet = pstmt.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            close(connection);
+
+            throw new DBException(e, "Can't get user... " + e.getMessage());
+        } finally {
+            close(connection);
         }
     }
 }

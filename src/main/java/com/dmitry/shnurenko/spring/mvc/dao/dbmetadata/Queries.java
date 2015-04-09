@@ -13,7 +13,8 @@ public enum Queries {
     UPDATE_EMPLOYEE("employee.update"),
     GET_ALL_EMPLOYEES("employee.get.all"),
     //  user
-    SAVE_USER_TO_DB("user.save");
+    SAVE_USER_TO_DB("user.save"),
+    GET_LOGIN_USER("user.get.if.login");
 
     private final String query;
 

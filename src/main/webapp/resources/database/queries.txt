@@ -5,3 +5,4 @@ employee.delete=DELETE FROM employee WHERE id=?;
 employee.get.all=SELECT * FROM employee;
 
 user.save=INSERT INTO user (login,password,email) VALUES(?,?,?);
+user.get.if.login=SELECT * FROM user where login=(?) AND password=(?);

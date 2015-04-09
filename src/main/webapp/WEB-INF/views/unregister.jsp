@@ -22,14 +22,11 @@
     <div class="main">
         <div class="north">
             <div id="register" class="registerPanelButton">Register</div>
-            <div id="welcomeUser" class="welcomeUser"></div>
         </div>
 
         <div class="west">
             <div id="buttons_panel" class="buttonsPanel">
-                <div id="add" class="button">Add</div>
-                <div id="edit" class="button">Edit</div>
-                <div id="delete" class="button">Remove</div>
+
             </div>
         </div>
 
@@ -69,8 +66,7 @@
 
         <div class="east">
             <div id="search" class="search">
-                <label class="searchLabel">Search:</label>
-                <input id="searchField" type="text" class="searchField" placeholder="input id or first name">
+
             </div>
 
             <div id="searchResult" class="searchResult">
