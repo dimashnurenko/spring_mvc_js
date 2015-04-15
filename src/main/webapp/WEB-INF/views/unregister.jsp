@@ -7,8 +7,6 @@
     <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="/resources/js/libraries/jquery.cookie.js"></script>
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
     <script src="${jquery}" type="text/javascript"></script>
@@ -66,7 +64,9 @@
 
         <div class="east">
             <div id="search" class="search">
-
+                <label class="searchLabel">Search:</label>
+                <input id="searchField" type="text" class="searchField" placeholder="input id or first name"
+                       disabled="disabled">
             </div>
 
             <div id="searchResult" class="searchResult">
@@ -74,14 +74,15 @@
             </div>
 
             <div class="loginPanel">
-                <form method="post" action="/user/login">
+                <form id="loginForm" method="post" action="/user/login">
                     <div class="loginParameterPanel">
                         <label class="loginLabel">Login:</label>
-                        <input name="login" class="loginTextBox" type="text" placeholder="login">
+                        <input id="login" name="login" class="loginTextBox" type="text" placeholder="login">
                     </div>
                     <div class="loginParameterPanel">
                         <label class="loginLabel">Password:</label>
-                        <input name="password" class="loginTextBox" type="password" placeholder="password">
+                        <input id="loginPassword" name="password" class="loginTextBox" type="password"
+                               placeholder="password">
                     </div>
 
                     <input id="loginButton" class="loginButton" type="submit" value="login">

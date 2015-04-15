@@ -15,17 +15,14 @@ function init() {
             url: "get/all",
             success: function (data) {
                 mainWidget.addEmployees(data)
+            },
+            error: function(request){
+            //TODO need add notification to display server response state
             }
         });
     }
 
     getAllEmployees();
-
-    setInterval(function () {
-        $.ajax({
-            url: "/"
-        });
-    }, 10 * 1000);
 
     //----form dialog object---
     function FormDialog() {

@@ -3,14 +3,14 @@
 <head lang="en">
     <c:url value="/resources/css/style.css" var="css"/>
     <c:url value="/resources/css/register.css" var="registerCss"/>
+    <c:url value="/resources/js/libraries/validation.js" var="validation"/>
     <c:url value="/resources/js/index.js" var="js"/>
     <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script type="text/javascript" src="/resources/js/libraries/jquery.cookie.js"></script>
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
+    <script src="${validation}" type="text/javascript"></script>
     <script src="${jquery}" type="text/javascript"></script>
     <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
@@ -21,8 +21,8 @@
 <div id="parent" class="parent">
     <div class="main">
         <div class="north">
-            <div id="register" class="registerPanelButton">Register</div>
-            <div id="welcomeUser" class="welcomeUser"></div>
+            <div id="logout" class="registerPanelButton">Logout</div>
+            <div id="welcomeUser" class="welcomeUser">Hello, <%=session.getAttribute("login")%></div>
         </div>
 
         <div class="west">
@@ -77,50 +77,10 @@
 
             </div>
 
-            <div class="loginPanel">
-                <form method="post" action="/user/login">
-                    <div class="loginParameterPanel">
-                        <label class="loginLabel">Login:</label>
-                        <input name="login" class="loginTextBox" type="text" placeholder="login">
-                    </div>
-                    <div class="loginParameterPanel">
-                        <label class="loginLabel">Password:</label>
-                        <input name="password" class="loginTextBox" type="password" placeholder="password">
-                    </div>
-
-                    <input id="loginButton" class="loginButton" type="submit" value="login">
-                </form>
-            </div>
         </div>
 
         <div class="south">
         </div>
-        <%--register window--%>
-        <div id="modal_form" class="modal_form">
-            <span id="modal_close" class="modal_close">X</span>
-
-            <form name="register" class="registerForm" method="post" action="/user/register">
-                <div class="registerParameterPanel">
-                    <label class="registerLabel">Login:</label>
-                    <input id="name" name="login" class="registerTextBox" type="text">
-                </div>
-                <div class="registerParameterPanel">
-                    <label id="emailLabel" class="registerLabel">Email:</label>
-                    <input id="email" name="email" class="registerTextBox" type="text">
-                </div>
-                <div class="registerParameterPanel">
-                    <label class="registerLabel">Password:</label>
-                    <input id="password" name="password" class="registerTextBox" type="password">
-                </div>
-                <div class="registerParameterPanel">
-                    <label id="repeatPasswordLabel" class="registerLabel">Repeat Password:</label>
-                    <input id="repeatPassword" name="repeatPassword" class="registerTextBox" type="password">
-                </div>
-
-                <input id="registerButton" class="registerButton" type="submit" value="Register">
-            </form>
-        </div>
-        <div id="overlay" class="overlay"></div>
     </div>
 </div>
 </body>

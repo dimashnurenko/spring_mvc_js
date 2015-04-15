@@ -39,9 +39,13 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET)
     public String showMainPage(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String id = (String) session.getAttribute("id");
+        if (!session.isNew()) {
+            String id = (String) session.getAttribute("id");
+            return userLoginManager.isContainId(id) ? "index" : "unregister";
+        }
 
-        return userLoginManager.isContainId(id) ? "index" : "unregister";
+        return "unregister";
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "confirmation")
@@ -54,14 +58,10 @@ public class MainController {
                     produces = APPLICATION_JSON_VALUE)
     public @ResponseBody Employee addEmployee(@RequestParam("id") int id,
                                               @RequestParam("firstName") String firstName,
-                                              @RequestParam("lastName") String lastName) {
+                                              @RequestParam("lastName") String lastName) throws DBException {
         Employee employee = entityFactory.createManager(id, firstName, lastName);
 
-        try {
-            employeeDao.save(employee);
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+        employeeDao.save(employee);
 
         return employee;
     }
@@ -69,13 +69,10 @@ public class MainController {
     @RequestMapping(value = "get/all",
                     method = RequestMethod.GET,
                     produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody List<Employee> getAll() {
+    public @ResponseBody List<Employee> getAll() throws DBException {
         List<Employee> employees = new ArrayList<>();
-        try {
-            employees.addAll(employeeDao.getAllEmployees());
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+
+        employees.addAll(employeeDao.getAllEmployees());
 
         return employees;
     }
@@ -85,15 +82,11 @@ public class MainController {
                     produces = APPLICATION_JSON_VALUE)
     public @ResponseBody Employee removeEmployee(@RequestParam("id") int id,
                                                  @RequestParam("firstName") String firstName,
-                                                 @RequestParam("lastName") String lastName) {
+                                                 @RequestParam("lastName") String lastName) throws DBException {
 
         Employee employee = entityFactory.createManager(id, firstName, lastName);
 
-        try {
-            employeeDao.delete(employee);
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+        employeeDao.delete(employee);
 
         return employee;
     }
@@ -103,15 +96,11 @@ public class MainController {
                     produces = APPLICATION_JSON_VALUE)
     public @ResponseBody Employee updateEmployee(@RequestParam("id") int id,
                                                  @RequestParam("firstName") String firstName,
-                                                 @RequestParam("lastName") String lastName) {
+                                                 @RequestParam("lastName") String lastName) throws DBException {
 
         Employee employee = entityFactory.createManager(id, firstName, lastName);
 
-        try {
-            employeeDao.update(employee);
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+        employeeDao.update(employee);
 
         return employee;
     }

@@ -123,14 +123,28 @@ public class RegisterController {
 
         if (isUserLogin) {
             HttpSession session = request.getSession();
-            session.setMaxInactiveInterval(60 * 1000);//30 min
+            session.setMaxInactiveInterval(10 * 60);//10 min
 
             String id = userIdGenerator.generate();
             userLoginManager.addId(id);
 
+            session.setAttribute("login", login);
+            session.removeAttribute("id");
             session.setAttribute("id", id);
         }
 
+        return "redirect:/";
+    }
+
+    @RequestMapping("/logout")
+    public String logOut(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("id");
+
+        userLoginManager.removeId(id);
+
+        session.removeAttribute("id");
+        session.invalidate();
         return "redirect:/";
     }
 
