@@ -9,15 +9,17 @@ else if (window.attachEvent)
 
 function init() {
     var mainWidget = new MainWidget();
+    var notification = new Notification();
 
     function getAllEmployees() {
         $.ajax({
             url: "get/all",
             success: function (data) {
-                mainWidget.addEmployees(data)
+                mainWidget.addEmployees(data);
+                notification.showInfo("Shown all employee...");
             },
-            error: function(request){
-            //TODO need add notification to display server response state
+            error: function () {
+                notification.showError("Can't get all employee...")
             }
         });
     }
@@ -80,13 +82,18 @@ function init() {
 
         var data = {id: id, firstName: firstName, lastName: lastName};
 
-        $.post("add/employee", data)
-            .done(function (data) {
+        $.ajax({
+            url: "add/employee",
+            method: 'POST',
+            data: data,
+            success: function (data) {
                 mainWidget.addEmployees([data]);
-            })
-            .fail(function (error) {
-                alert(error);
-            });
+                notification.showInfo(firstName + " is added...");
+            },
+            error: function () {
+                notification.showError("Can't add employee...")
+            }
+        });
 
         formDialog.form.style.display = "none";
     };
@@ -98,18 +105,26 @@ function init() {
 
         var element = {id: id, firstName: firstName, lastName: lastName};
 
-        $.get("update/employee", element).done(success(element));
+        $.ajax({
+            url: "update/employee",
+            method: 'GET',
+            data: element,
+            success: function (element) {
+                mainWidget.elements[element.id].employee.firstName = element.firstName;
+                mainWidget.elements[element.id].employee.lastName = element.lastName;
 
-        function success(element) {
-            mainWidget.elements[element.id].employee.firstName = element.firstName;
-            mainWidget.elements[element.id].employee.lastName = element.lastName;
+                $("#elements").empty();
 
-            $("#elements").empty();
+                mainWidget.addEmployees(mainWidget.elements);
 
-            mainWidget.addEmployees(mainWidget.elements);
+                formDialog.hideDialog();
 
-            formDialog.hideDialog();
-        }
+                notification.showInfo(firstName + " is updated...");
+            },
+            error: function () {
+                notification.showError("Can't update employee...")
+            }
+        });
     };
 
     FormDialog.prototype.onAddFormValuesChanged = function () {
@@ -208,23 +223,31 @@ function init() {
 
         var element = {id: id, firstName: firstName, lastName: lastName};
 
-        $.get("delete/employee", element).done(success(element));
+        $.ajax({
+            url: "delete/employee",
+            method: 'GET',
+            data: element,
+            success: function (element) {
+                for (var i in mainWidget.elements) {
+                    var elementWidget = mainWidget.elements[i];
 
-        function success(element) {
-            for (var i in mainWidget.elements) {
-                var elementWidget = mainWidget.elements[i];
+                    if (elementWidget.getId() == element.id) {
+                        delete mainWidget.elements[element.id];
 
-                if (elementWidget.getId() == element.id) {
-                    delete mainWidget.elements[element.id];
-
-                    break;
+                        break;
+                    }
                 }
+
+                $("#elements").empty();
+
+                mainWidget.addEmployees(mainWidget.elements);
+
+                notification.showInfo(firstName + " was deleted...");
+            },
+            error: function () {
+                notification.showError("Can't delete employee...")
             }
-
-            $("#elements").empty();
-
-            mainWidget.addEmployees(mainWidget.elements);
-        }
+        });
     };
 
     MainWidget.prototype.addEmployees = function (data) {

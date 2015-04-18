@@ -2,15 +2,17 @@
 <html>
 <head lang="en">
     <c:url value="/resources/css/style.css" var="css"/>
+    <c:url value="/resources/css/notification.css" var="notificationCss"/>
     <c:url value="/resources/css/register.css" var="registerCss"/>
-    <c:url value="/resources/js/libraries/validation.js" var="validation"/>
     <c:url value="/resources/js/index.js" var="js"/>
+    <c:url value="/resources/js/notification.js" var="notificationJS"/>
     <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
-    <script src="${validation}" type="text/javascript"></script>
+    <link href="${notificationCss}" rel="stylesheet">
+    <script src="${notificationJS}" type="text/javascript"></script>
     <script src="${jquery}" type="text/javascript"></script>
     <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
@@ -68,6 +70,9 @@
         </div>
 
         <div class="east">
+            <div id = "notification" class="notification">
+
+            </div>
             <div id="search" class="search">
                 <label class="searchLabel">Search:</label>
                 <input id="searchField" type="text" class="searchField" placeholder="input id or first name">
