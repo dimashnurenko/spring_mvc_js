@@ -380,15 +380,64 @@ function init() {
     function ElementWidget(employee) {
         this.employee = employee;
 
-        $("#elements").append('<div id=' + employee.id + ' class="employee">');
+        var employeeId = employee.id;
 
-        $("#" + employee.id)
-            .append('<div id="id' + employee.id + '" class="employeeId">')
-            .append('<div id="firstName' + employee.id + '" class="employeeName">')
-            .append('<div id="lastName' + employee.id + '" class="employeeName">')
+        $("#elements").append('<div id=' + employeeId + ' class="employee">');
+
+        $("#" + employeeId)
+            .append('<div id="id' + employeeId + '" class="employeeId">')
+            .append('<div id="firstName' + employeeId + '" class="employeeName">')
+            .append('<div id="lastName' + employeeId + '" class="employeeName">')
+            .append('<div id="showInfo' + employeeId + '" class="employeeName">')
             .click(function () {
-                MainWidget.prototype.onElementSelected(employee.id);
+                MainWidget.prototype.onElementSelected(employeeId);
             });
+
+        $("#showInfo" + employeeId).append('<div id="showInfoBtn' + employeeId + '" class="showInfoBtn">Show info</div>');
+
+        $("#showInfoBtn" + employeeId).click(function () {
+            $("#employeeId").text(employeeId);
+
+            $.ajax({
+                method: "GET",
+                url: "/info",
+                success: function (moreInfo) {
+                    var elements = $("#elements");
+
+                    var tableContent = elements.html();
+
+                    elements.empty();
+
+                    elements.html(moreInfo);
+
+                    $.getScript("/resources/js/more_info.js", function () {
+                        init();
+                    });
+
+                    notification.showInfo("Additional info shown...");
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/address/get",
+                        data: {employeeId: employeeId},
+                        success: function (address) {
+                            var x = address;
+                        },
+                        error: function () {
+                            notification.showError("Can't get address")
+                        }
+                    });
+
+                    $("#backBtn").click(function () {
+                        elements.html(tableContent);
+                        location.reload();
+                    });
+                },
+                error: function () {
+                    notification.showError("Can't show more info...")
+                }
+            });
+        });
     }
 
     ElementWidget.prototype.getId = function () {

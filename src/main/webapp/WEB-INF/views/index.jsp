@@ -9,11 +9,13 @@
     <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
+    <c:url value="/resources/css/more_info.css" var="moreInfoCss"/>
+    <link href="${moreInfoCss}" rel="stylesheet">
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
     <link href="${notificationCss}" rel="stylesheet">
-    <script src="${notificationJS}" type="text/javascript"></script>
     <script src="${jquery}" type="text/javascript"></script>
+    <script src="${notificationJS}" type="text/javascript"></script>
     <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
     <script src="${registerJs}" type="text/javascript"></script>
@@ -61,6 +63,7 @@
                     <label class="tableTitleId">ID</label>
                     <label class="tableTitleFirstName">FIRST NAME</label>
                     <label class="tableTitleLastName">LAST NAME</label>
+                    <label class="tableTitleMoreInfo">MORE INFO</label>
                 </div>
 
                 <div id="elements" class="elements">

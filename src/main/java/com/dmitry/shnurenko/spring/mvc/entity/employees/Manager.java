@@ -1,8 +1,10 @@
 package com.dmitry.shnurenko.spring.mvc.entity.employees;
 
+import com.dmitry.shnurenko.spring.mvc.entity.moreinfo.Address;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
-import java.util.Objects;
+import javax.annotation.Nullable;
 
 /**
  * Stores information about current state of manager. Also the class contains methods which allows change
@@ -12,9 +14,10 @@ import java.util.Objects;
  */
 public class Manager implements Employee {
 
-    private int    id;
-    private String firstName;
-    private String lastName;
+    private int     id;
+    private String  firstName;
+    private String  lastName;
+    private Address address;
 
     public Manager(int id, String firstName, String lastName) {
         this.id = id;
@@ -63,12 +66,20 @@ public class Manager implements Employee {
 
     /** {inheritDoc} */
     @Override
-    public int hashCode() {
-        return id;
+    public void setAddress(@Nonnull Address address) {
+        this.address = address;
     }
 
     /** {inheritDoc} */
-    public boolean equals(Employee otherEmployee) {
-        return Objects.equals(this.id, otherEmployee.getId());
+    @Nullable
+    @Override
+    public Address getAddress() {
+        return address;
+    }
+
+    /** {inheritDoc} */
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

@@ -3,10 +3,12 @@ package com.dmitry.shnurenko.spring.mvc.inject;
 import com.dmitry.shnurenko.spring.mvc.entity.access.User;
 import com.dmitry.shnurenko.spring.mvc.entity.employees.Employee;
 import com.dmitry.shnurenko.spring.mvc.entity.employees.Manager;
+import com.dmitry.shnurenko.spring.mvc.entity.moreinfo.Address;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Factory which allows create entity of employees.
@@ -40,5 +42,34 @@ public class EntityFactory {
     @Nonnull
     public User createUser(@Nonnull String login, @Nonnull String email, @Nonnull String password) {
         return new User(login, email, password);
+    }
+
+    /**
+     * Creates entity of address
+     *
+     * @param country country which need set
+     * @param city    city which need set
+     * @param street  street which need set
+     * @param house   house which need set
+     * @param flat    flat which need set
+     * @return an instance of {@link Address}
+     */
+    @Nonnull
+    public Address createAddress(@Nonnull String country,
+                                 @Nonnull String city,
+                                 @Nullable String street,
+                                 @Nonnegative int house,
+                                 @Nonnegative int flat) {
+        return new Address(country, city, street, house, flat);
+    }
+
+    /**
+     * Creates empty simple object with default fields values.
+     *
+     * @return an instance of {@link Address}
+     */
+    @Nonnull
+    public Address createAddress() {
+        return new Address();
     }
 }

@@ -1,7 +1,10 @@
 package com.dmitry.shnurenko.spring.mvc.entity.employees;
 
+import com.dmitry.shnurenko.spring.mvc.entity.moreinfo.Address;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serializable;
 
 /**
@@ -44,4 +47,14 @@ public interface Employee extends Serializable {
      * @param lastName name which need set
      */
     void setLastName(@Nonnull String lastName);
+
+    /**
+     * Sets address of employee.
+     *
+     * @param address which need set
+     */
+    void setAddress(@Nonnull Address address);
+
+    /** @return value of employee's address */
+    @Nullable Address getAddress();
 }

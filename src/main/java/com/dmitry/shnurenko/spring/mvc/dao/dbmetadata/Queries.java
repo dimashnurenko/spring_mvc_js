@@ -14,7 +14,12 @@ public enum Queries {
     GET_ALL_EMPLOYEES("employee.get.all"),
     //  user
     SAVE_USER_TO_DB("user.save"),
-    GET_LOGIN_USER("user.get.if.login");
+    GET_LOGIN_USER("user.get.if.login"),
+    //address
+    SAVE_ADDRESS("address.save"),
+    UPDATE_ADDRESS("address.update"),
+    DELETE_ADDRESS("address.delete"),
+    GET_ADDRESS("address.get");
 
     private final String query;
 

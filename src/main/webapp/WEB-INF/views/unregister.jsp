@@ -9,6 +9,8 @@
     <c:url value="/resources/js/notification.js" var="notificationJS"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
+    <c:url value="/resources/css/more_info.css" var="moreInfoCss"/>
+    <link href="${moreInfoCss}" rel="stylesheet">
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
     <link href="${notificationCss}" rel="stylesheet">
@@ -20,6 +22,7 @@
     <title>spring_js</title>
 </head>
 <body>
+<div id="employeeId" hidden="hidden"></div>
 <div id="parent" class="parent">
     <div class="main">
         <div class="north">
@@ -55,9 +58,12 @@
                 <%---------------------%>
 
                 <div class="tableTitle">
-                    <label class="tableTitleId">ID</label>
-                    <label class="tableTitleFirstName">FIRST NAME</label>
-                    <label class="tableTitleLastName">LAST NAME</label>
+                    <div>
+                        <label class="tableTitleId">ID</label>
+                        <label class="tableTitleFirstName">FIRST NAME</label>
+                        <label class="tableTitleLastName">LAST NAME</label>
+                        <label class="tableTitleMoreInfo">MORE INFO</label>
+                    </div>
                 </div>
 
                 <div id="elements" class="elements">
@@ -67,7 +73,7 @@
         </div>
 
         <div class="east">
-            <div id = "notification" class="notification">
+            <div id="notification" class="notification">
 
             </div>
             <div id="search" class="search">

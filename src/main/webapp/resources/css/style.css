@@ -65,12 +65,12 @@
     cursor: pointer;
 }
 
-.formButtonCancel:active, .formButtonAdd:active, .button:active, .registerPanelButton:active {
+.formButtonCancel:active, .formButtonAdd:active, .button:active, .registerPanelButton:active, .showInfoBtn:active {
     background: #173530;
     opacity: 0.7;
 }
 
-.formButtonCancel:hover, .formButtonAdd:hover, .button:hover, .registerPanelButton:hover {
+.formButtonCancel:hover, .formButtonAdd:hover, .button:hover, .registerPanelButton:hover, .showInfoBtn:hover {
     box-shadow: 0 0 20px 0 #173530;
     text-shadow: 0 0 1px 0 deepskyblue;
 }
@@ -161,28 +161,35 @@
 }
 
 .tableTitleId {
-    margin-left: 95px;
+    margin-left: 45px;
     margin-top: 6px;
     float: left;
     text-shadow: 1px -1px 5px cyan;
 }
 
 .tableTitleFirstName {
-    margin-left: 140px;
+    margin-left: 80px;
     margin-top: 6px;
     float: left;
     text-shadow: 1px -1px 5px cyan;
 }
 
 .tableTitleLastName {
-    margin-right: 60px;
+    margin-left: 70px;
     margin-top: 6px;
-    float: right;
+    float: left;
+    text-shadow: 1px -1px 5px cyan;
+}
+
+.tableTitleMoreInfo {
+    margin-left: 70px;
+    margin-top: 6px;
+    float: left;
     text-shadow: 1px -1px 5px cyan;
 }
 
 .employeeId {
-    width: 200px;
+    width: 102px;
     height: 30px;
     text-align: center;
     box-shadow: inset -1px 0 0 0 #272A27;
@@ -190,7 +197,7 @@
 }
 
 .employeeName {
-    width: 200px;
+    width: 166px;
     height: 30px;
     text-align: center;
     box-shadow: inset -1px 0 0 0 #272A27;
@@ -274,4 +281,21 @@
     font-size: 15px;
     padding-top: 8px;
     cursor: pointer;
+}
+
+.showInfoBtn {
+    width: 80px;
+    height: 20px;
+    margin-top: 5px;
+    border-radius: 5px;
+    color: #AEAEAE;
+    text-align: center;
+    margin-left: 40px;
+    float: left;
+    background: #272A27;
+}
+
+.elements {
+    width: 600px;
+    height: 500px;
 }

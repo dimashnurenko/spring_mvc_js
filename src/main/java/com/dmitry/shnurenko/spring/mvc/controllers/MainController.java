@@ -48,6 +48,11 @@ public class MainController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "info")
+    public String getMoreInfo() {
+        return "moreInfo";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "confirmation")
     public String confirmRegistry() {
         return "confirmRegister";
