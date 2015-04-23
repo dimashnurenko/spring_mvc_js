@@ -6,6 +6,7 @@ import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.sql.SQLException;
 
 /**
  * Provides methods which allows store information of employee's address.
@@ -20,7 +21,7 @@ public interface AddressDao {
      * @param employeeId employee id for which need save address
      * @throws DBException
      */
-    void save(@Nonnegative int employeeId, @Nonnull Address address) throws DBException;
+    void saveOrUpdate(@Nonnegative int employeeId, @Nonnull Address address) throws DBException, SQLException;
 
     /**
      * Returns address to data base for current employee using employee id. The method can throw {@link DBException}
@@ -30,14 +31,6 @@ public interface AddressDao {
      * @throws DBException
      */
     @Nullable Address get(@Nonnegative int employeeId) throws DBException;
-
-    /**
-     * Updates address to data base for current employee using employee id. The method can throw {@link DBException}
-     *
-     * @param employeeId employee id for which need save address
-     * @throws DBException
-     */
-    void update(@Nonnegative int employeeId, @Nonnull Address address) throws DBException;
 
     /**
      * Deletes address to data base for current employee using employee id. The method can throw {@link DBException}

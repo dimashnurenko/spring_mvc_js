@@ -13,10 +13,12 @@ function init() {
         var house = $("#house").val();
         var flat = $("#flat").val();
 
+        var address = {country: country, city: city, street: street, house: house, flat: flat};
+
         $.ajax({
             method: "POST",
-            url: "address/save",
-            data: {employeeId: employeeId, country: country, city: city, street: street, house: house, flat: flat},
+            url: "/address/save",
+            data: {employeeId: employeeId, address: address},
             success: function () {
                 notification.showInfo("Address saved for " + employeeId)
             },

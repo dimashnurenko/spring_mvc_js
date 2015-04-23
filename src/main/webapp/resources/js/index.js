@@ -414,14 +414,18 @@ function init() {
                         init();
                     });
 
-                    notification.showInfo("Additional info shown...");
-
                     $.ajax({
                         method: "GET",
                         url: "/address/get",
                         data: {employeeId: employeeId},
                         success: function (address) {
-                            var x = address;
+                            $("#country").val(address.country);
+                            $("#city").val(address.city);
+                            $("#street").val(address.street);
+                            $("#house").val(address.house);
+                            $("#flat").val(address.flat);
+
+                            notification.showInfo("Info of " + employee.firstName + "...");
                         },
                         error: function () {
                             notification.showError("Can't get address")

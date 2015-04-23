@@ -16,8 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.GET_ADDRESS;
-import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.SAVE_ADDRESS;
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.*;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.AddressTable.*;
 import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
@@ -40,11 +39,26 @@ public class AddressDaoImpl implements AddressDao {
 
     /** {inheritDoc} */
     @Override
-    public void save(@Nonnegative int employeeId, @Nonnull Address address) throws DBException {
+    public void saveOrUpdate(@Nonnegative int employeeId, @Nonnull Address address) throws DBException, SQLException {
         Connection con = SqlLiteConnection.get();
 
         try {
-            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(SAVE_ADDRESS));
+            con.setAutoCommit(false);
+
+            PreparedStatement getIds = con.prepareStatement(dbInfo.getQuery(GET_ALL_IDS));
+            ResultSet resultSet = getIds.executeQuery();
+
+            String nextQuery = dbInfo.getQuery(SAVE_ADDRESS);
+
+            while (resultSet.next()) {
+                if (employeeId == resultSet.getInt(EMPLOYEE_ID.toString())) {
+                    nextQuery = dbInfo.getQuery(UPDATE_ADDRESS);
+
+                    break;
+                }
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(nextQuery);
             pstmt.setInt(1, employeeId);
 
             pstmt.setString(2, address.getCountry());
@@ -55,7 +69,12 @@ public class AddressDaoImpl implements AddressDao {
 
             pstmt.execute();
 
+            con.commit();
+
+            close(con);
         } catch (SQLException exception) {
+            con.rollback();
+            close(con);
             throw new DBException(exception, "Can't save address");
         }
     }
@@ -88,12 +107,6 @@ public class AddressDaoImpl implements AddressDao {
         } finally {
             close(con);
         }
-    }
-
-    /** {inheritDoc} */
-    @Override
-    public void update(@Nonnegative int employeeId, @Nonnull Address address) throws DBException {
-
     }
 
     /** {inheritDoc} */

@@ -19,7 +19,8 @@ public enum Queries {
     SAVE_ADDRESS("address.save"),
     UPDATE_ADDRESS("address.update"),
     DELETE_ADDRESS("address.delete"),
-    GET_ADDRESS("address.get");
+    GET_ADDRESS("address.get"),
+    GET_ALL_IDS("address.get.all.ids");
 
     private final String query;
 
