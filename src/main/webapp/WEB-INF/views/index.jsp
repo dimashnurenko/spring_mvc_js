@@ -22,6 +22,7 @@
     <title>spring_js</title>
 </head>
 <body>
+<div id="employeeId" hidden="hidden"></div>
 <div id="parent" class="parent">
     <div class="main">
         <div class="north">

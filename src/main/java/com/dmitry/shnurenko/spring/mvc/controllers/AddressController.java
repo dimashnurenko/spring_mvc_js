@@ -36,7 +36,7 @@ public class AddressController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public void saveAddress(HttpServletRequest request) throws DBException, SQLException {
+    public @ResponseBody Address saveAddress(HttpServletRequest request) throws DBException, SQLException {
         Map<String, String> parameters = RequestUtil.getParameterMap(request);
 
         int employeeId = parseInt(parameters.get("employeeId"));
@@ -56,6 +56,8 @@ public class AddressController {
                                                       isHouseOrFlatEmpty ? 0 : parseInt(flat));
 
         addressDao.saveOrUpdate(employeeId, address);
+
+        return address;
     }
 
     @RequestMapping(value = "/get",

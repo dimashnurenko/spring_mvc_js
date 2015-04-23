@@ -59,13 +59,13 @@ public class AddressDaoImpl implements AddressDao {
             }
 
             PreparedStatement pstmt = con.prepareStatement(nextQuery);
-            pstmt.setInt(1, employeeId);
+            pstmt.setInt(6, employeeId);
 
-            pstmt.setString(2, address.getCountry());
-            pstmt.setString(3, address.getCity());
-            pstmt.setString(4, address.getStreet());
-            pstmt.setInt(5, address.getHouse());
-            pstmt.setInt(6, address.getFlat());
+            pstmt.setString(1, address.getCountry());
+            pstmt.setString(2, address.getCity());
+            pstmt.setString(3, address.getStreet());
+            pstmt.setInt(4, address.getHouse());
+            pstmt.setInt(5, address.getFlat());
 
             pstmt.execute();
 
