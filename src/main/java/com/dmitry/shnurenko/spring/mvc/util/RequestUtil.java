@@ -6,13 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The class contains methods to get parameters from {@link HttpServletRequest} and convert them in more read-able form.
+ *
  * @author Dmitry Shnurenko
  */
 public class RequestUtil {
-
+    /** Can't create object from this class */
     private RequestUtil() {
     }
 
+    /**
+     * Returns map with parameters from {@link HttpServletRequest}
+     *
+     * @param request request from which need get parameters
+     * @return map with parameters
+     */
     @Nonnull
     public static Map<String, String> getParameterMap(@Nonnull HttpServletRequest request) {
         Map<String, String[]> requestParameters = request.getParameterMap();
@@ -39,9 +47,5 @@ public class RequestUtil {
         int endChar = key.lastIndexOf("]");
 
         return key.substring(startChar, endChar);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Integer.parseInt(""));
     }
 }
