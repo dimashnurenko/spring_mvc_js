@@ -4,9 +4,9 @@
 function init() {
     var notification = new Notification();
 
-    $("#saveAddress").click(function () {
-        var employeeId = $("#employeeId").text();
+    var employeeId = $("#employeeId").text();
 
+    $("#saveAddress").click(function () {
         var country = $("#country").val();
         var city = $("#city").val();
         var street = $("#street").val();
@@ -26,6 +26,26 @@ function init() {
                 notification.showError("Can't save address...")
             }
 
+        });
+    });
+
+    $("#deleteAddress").click(function () {
+        $.ajax({
+            method: "POST",
+            url: "/address/delete",
+            data: {employeeId: employeeId},
+            success: function () {
+                notification.showInfo("Deleted address with id" + employeeId);
+
+                $("#country").val("");
+                $("#city").val("");
+                $("#street").val("");
+                $("#house").val("");
+                $("#flat").val("");
+            },
+            error: function (x, y, error) {
+                notification.showError(error);
+            }
         });
     });
 

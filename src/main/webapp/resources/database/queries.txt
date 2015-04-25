@@ -7,7 +7,7 @@ employee.get.all=SELECT * FROM employee;
 user.save=INSERT INTO user (login,password,email) VALUES(?,?,?);
 user.get.if.login=SELECT * FROM user where login=(?) AND password=(?);
 
-address.save=INSERT INTO address (employee_id,country,city,street,house,flat) VALUES (?,?,?,?,?,?);
+address.save=INSERT INTO address (country,city,street,house,flat,employee_id) VALUES (?,?,?,?,?,?);
 address.update=UPDATE address SET country=?,city=?,street=?,house=?,flat=?   WHERE employee_id=?;
 address.delete=DELETE FROM address WHERE employee_id=?;
 address.get=SELECT * FROM address WHERE employee_id=?;

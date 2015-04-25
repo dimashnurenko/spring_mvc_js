@@ -112,7 +112,21 @@ public class AddressDaoImpl implements AddressDao {
     /** {inheritDoc} */
     @Override
     public void delete(@Nonnegative int employeeId) throws DBException {
+        Connection con = SqlLiteConnection.get();
 
+        try {
+            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(DELETE_ADDRESS));
+
+            pstmt.setInt(1, employeeId);
+
+            pstmt.execute();
+
+            close(con);
+        } catch (SQLException exception) {
+            close(con);
+
+            throw new DBException(exception, "Can't delete address");
+        }
     }
 }
 

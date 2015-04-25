@@ -6,11 +6,9 @@ import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import com.dmitry.shnurenko.spring.mvc.inject.EntityFactory;
 import com.dmitry.shnurenko.spring.mvc.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -71,5 +69,12 @@ public class AddressController {
         }
 
         return address;
+    }
+
+    @RequestMapping(value = "/delete",
+                    method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAddress(@RequestParam("employeeId") int employeeId) throws DBException {
+        addressDao.delete(employeeId);
     }
 }
