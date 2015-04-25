@@ -256,15 +256,13 @@ function init() {
 
             var hasEmployee = entity.employee;
 
-            var elementWidget = new ElementWidget(hasEmployee ? hasEmployee : entity);
+            var employee = new Employee(hasEmployee ? hasEmployee.id : entity.id,
+                hasEmployee ? hasEmployee.firstName : entity.firstName,
+                hasEmployee ? hasEmployee.lastName : entity.lastName);
 
-            var id = hasEmployee ? hasEmployee.id : entity.id;
-            var firstName = hasEmployee ? hasEmployee.firstName : entity.firstName;
-            var lastName = hasEmployee ? hasEmployee.lastName : entity.lastName;
+            var elementWidget = new ElementWidget(employee);
 
-            $("#id" + id).text(id);
-            $("#firstName" + id).text(firstName);
-            $("#lastName" + id).text(lastName);
+            var id = employee.id;
 
             mainWidget.elements[id] = elementWidget;
 
@@ -382,19 +380,38 @@ function init() {
 
         var employeeId = employee.id;
 
-        $("#elements").append('<div id=' + employeeId + ' class="employee">');
+        $("#elements").append('<div id=' + employeeId + ' class="element">');
+
+        var fLNamesId = "flNames" + employeeId;
+        var imageId = "image" + employeeId;
+        var hiringDate = "hiringDate" + employeeId;
 
         $("#" + employeeId)
-            .append('<div id="id' + employeeId + '" class="employeeId">')
-            .append('<div id="firstName' + employeeId + '" class="employeeName">')
-            .append('<div id="lastName' + employeeId + '" class="employeeName">')
-            .append('<div id="showInfo' + employeeId + '" class="employeeName">')
+            .append('<div id=' + imageId + ' class="image">')
+            .append('<div id=' + fLNamesId + ' class="firstLastName font">')
+            .append('<div id=' + hiringDate + ' class="firstLastName font">')
             .click(function () {
                 MainWidget.prototype.onElementSelected(employeeId);
             });
 
-        $("#showInfo" + employeeId).append('<div id="showInfoBtn' + employeeId + '" class="showInfoBtn">Show info</div>');
+        $("#" + fLNamesId).append('<label id=label' + fLNamesId + ' class="fLNames">');
+        $("#label" + fLNamesId).text(employee.firstName + " " + employee.lastName);
 
+        $("#" + imageId).append('<svg id=image' + imageId + ' class="imageIcon">');
+        $("#image" + imageId).html(createSVG(40, 40, "resources/images/postDeveloper.svg"));
+
+        function createSVG(height, width, location) {
+            var image = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            image.setAttributeNS(null, 'height', height.toString());
+            image.setAttributeNS(null, 'width', width.toString());
+            image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', location);
+            image.setAttributeNS(null, 'visibility', 'visible');
+
+            return image;
+        }
+
+
+        //TODO get additional info
         $("#showInfoBtn" + employeeId).click(function () {
             $("#employeeId").text(employeeId);
 
@@ -457,10 +474,16 @@ function init() {
     };
 
     ElementWidget.prototype.select = function (id) {
+        $("#image" + id).addClass('selected');
+        $("#flNames" + id).addClass('selected');
+        $("#hiringDate" + id).addClass('selected');
         $("#" + id).addClass('selected');
     };
 
     ElementWidget.prototype.unSelect = function (id) {
+        $("#image" + id).removeClass('selected');
+        $("#flNames" + id).removeClass('selected');
+        $("#hiringDate" + id).removeClass('selected');
         $("#" + id).removeClass('selected');
     };
 

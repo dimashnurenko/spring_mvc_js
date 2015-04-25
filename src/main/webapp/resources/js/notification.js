@@ -3,7 +3,7 @@
  */
 function Notification() {
     var notification = $("#notification");
-    notification.append("<svg id='imageFrame' class='image'></svg>");
+    notification.append("<svg id='imageFrame' class='elementImage'></svg>");
     notification.append('<div id="message" class="message"></div>');
 }
 
