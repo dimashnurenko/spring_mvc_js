@@ -27,229 +27,16 @@ function init() {
 
     getAllEmployees();
 
-    //----form dialog object---
-    function FormDialog() {
-        this.isAddBtnActive = true;
-        this.isUpdateBtnActive = true;
-        this.isAddFormOpened = true;
-
-        this.id = "";
-        this.name = "";
-
-        $("#formAddBtn").click(function () {
-            var isAddBtn = $("#formAddBtn").text() === "Add Employee";
-
-            if (formDialog.isAddBtnActive && isAddBtn) {
-                formDialog.onAddClicked();
-            }
-
-            if (formDialog.isUpdateBtnActive && !isAddBtn) {
-                formDialog.onUpdateClicked();
-            }
-        });
-
-        $("#cancel").click(function () {
-            formDialog.hideDialog();
-        });
-
-        $("#number").keyup(function () {
-            onValuesChanged();
-        });
-
-        function onValuesChanged() {
-            if (formDialog.isAddFormOpened) {
-                formDialog.onAddFormValuesChanged()
-            } else {
-                formDialog.onEditFormValuesChanged();
-            }
-        }
-
-        $("#firstName").keyup(function () {
-            onValuesChanged();
-        });
-
-        $("#lastName").keyup(function () {
-            onValuesChanged();
-        });
-    }
-
-    var formDialog = new FormDialog();
-    formDialog.form = $("#form")[0];
-
-    FormDialog.prototype.onAddClicked = function () {
-        var id = $("#number").val();
-        var firstName = $("#firstName").val();
-        var lastName = $("#lastName").val();
-
-        var data = {id: id, firstName: firstName, lastName: lastName};
-
-        $.ajax({
-            url: "add/employee",
-            method: 'POST',
-            data: data,
-            success: function (data) {
-                mainWidget.addEmployees([data]);
-                notification.showInfo(firstName + " is added...");
-            },
-            error: function () {
-                notification.showError("Can't add employee...")
-            }
-        });
-
-        formDialog.form.style.display = "none";
-    };
-
-    FormDialog.prototype.onUpdateClicked = function () {
-        var id = $("#number").val();
-        var firstName = $("#firstName").val();
-        var lastName = $("#lastName").val();
-
-        var element = {id: id, firstName: firstName, lastName: lastName};
-
-        $.ajax({
-            url: "update/employee",
-            method: 'GET',
-            data: element,
-            success: function (element) {
-                mainWidget.elements[element.id].employee.firstName = element.firstName;
-                mainWidget.elements[element.id].employee.lastName = element.lastName;
-
-                $("#elements").empty();
-
-                mainWidget.addEmployees(mainWidget.elements);
-
-                formDialog.hideDialog();
-
-                notification.showInfo(firstName + " is updated...");
-            },
-            error: function () {
-                notification.showError("Can't update employee...")
-            }
-        });
-    };
-
-    FormDialog.prototype.onAddFormValuesChanged = function () {
-        var number = $("#number").val();
-        var firstName = $("#firstName").val();
-        var lastName = $("#lastName").val();
-
-        this.isAddBtnActive = number.length > 0 && firstName.length > 0 && lastName.length > 0;
-
-        $("#formAddBtn").css("opacity", this.isAddBtnActive ? "1" : "0.4");
-    };
-
-    FormDialog.prototype.onEditFormValuesChanged = function () {
-        var selectedId = mainWidget.selectedWidget.getId();
-        var selectedFirstName = mainWidget.selectedWidget.getFirstName();
-        var selectedLastName = mainWidget.selectedWidget.getLastName();
-
-        var id = $("#number").val();
-        var firstName = $("#firstName").val();
-        var lastName = $("#lastName").val();
-
-        this.isUpdateBtnActive = id !== selectedId || firstName !== selectedFirstName || lastName !== selectedLastName;
-
-        $("#formAddBtn").css("opacity", this.isUpdateBtnActive ? "1" : "0.4");
-    };
-
-    FormDialog.prototype.showDialog = function () {
-        formDialog.form.style.display = "block";
-    };
-
-    FormDialog.prototype.hideDialog = function () {
-        formDialog.form.style.display = "none";
-    };
-
     //----main widget object------
     function MainWidget() {
-        $("#add").click(function () {
-            mainWidget.onAddBtnClicked();
-        });
-
-        $("#edit").click(function () {
-            mainWidget.onEditBtnClicked();
-        });
-
-        $("#delete").click(function () {
-            mainWidget.onDeleteClicked();
-        });
-
         $("#searchField").keyup(function () {
             mainWidget.searchElement();
         });
-
-        this.selectedWidget = null;
 
         this.id = null;
         this.name = null;
         this.elements = {};
     }
-
-    MainWidget.prototype.onAddBtnClicked = function () {
-        $("#number").val("");
-        $("#firstName").val("");
-        $("#lastName").val("");
-
-        $("#formAddBtn").text("Add Employee");
-
-        formDialog.onAddFormValuesChanged();
-
-        formDialog.isAddFormOpened = true;
-
-        formDialog.showDialog();
-    };
-
-    MainWidget.prototype.onEditBtnClicked = function () {
-        formDialog.form.style.display = "block";
-
-        var number = $("#number");
-
-        number.prop("disabled", true);
-
-        $("#formAddBtn").text("Update");
-
-        number.val(mainWidget.selectedWidget.getId());
-        $("#firstName").val(mainWidget.selectedWidget.getFirstName());
-        $("#lastName").val(mainWidget.selectedWidget.getLastName());
-
-        formDialog.isAddFormOpened = false;
-
-        formDialog.onEditFormValuesChanged();
-    };
-
-    MainWidget.prototype.onDeleteClicked = function () {
-        var id = mainWidget.selectedWidget.getId();
-        var firstName = mainWidget.selectedWidget.getFirstName();
-        var lastName = mainWidget.selectedWidget.getLastName();
-
-        var element = {id: id, firstName: firstName, lastName: lastName};
-
-        $.ajax({
-            url: "delete/employee",
-            method: 'GET',
-            data: element,
-            success: function (element) {
-                for (var i in mainWidget.elements) {
-                    var elementWidget = mainWidget.elements[i];
-
-                    if (elementWidget.getId() == element.id) {
-                        delete mainWidget.elements[element.id];
-
-                        break;
-                    }
-                }
-
-                $("#elements").empty();
-
-                mainWidget.addEmployees(mainWidget.elements);
-
-                notification.showInfo(firstName + " was deleted...");
-            },
-            error: function () {
-                notification.showError("Can't delete employee...")
-            }
-        });
-    };
 
     MainWidget.prototype.addEmployees = function (data) {
         for (var i in data) {
@@ -266,12 +53,18 @@ function init() {
             var id = employee.id;
 
             mainWidget.elements[id] = elementWidget;
-
-            mainWidget.onElementSelected(id);
         }
+
+        var firstEntity = data[0];
+        var hasFirst = firstEntity.employee;
+
+        mainWidget.onElementSelected(hasFirst ? hasFirst.id : firstEntity.id);
     };
 
+    var EMPLOYEE_ID = 0;
+
     MainWidget.prototype.onElementSelected = function (id) {
+        EMPLOYEE_ID = id;
         var elements = mainWidget.elements;
 
         for (var i in elements) {
@@ -398,7 +191,7 @@ function init() {
                 MainWidget.prototype.onElementSelected(employeeId);
             });
 
-        $("#" + fLNamesId).append('<label id=label' + fLNamesId + ' class="fLNames">');
+        $("#" + fLNamesId).append('<div id=label' + fLNamesId + ' class="fLNames">');
         $("#label" + fLNamesId).text(employee.firstName + " " + employee.lastName);
 
         $("#" + imageId).append('<svg id=image' + imageId + ' class="imageIcon">');
@@ -440,6 +233,85 @@ function init() {
         $("#hiringDate" + id).removeClass('selected');
         $("#" + id).removeClass('rightShadow');
     };
+
+//    ----------------- add employee -----------------
+    $("#addEmployeeBtn").click(function () {
+        var employee = new Employee("no negative number value", "enter first name", "enter last name");
+
+        moreInfo.showEmployeeInfo(employee);
+        moreInfo.setAddress("", "", "", "", "");
+        moreInfo.disableAddressForm(true);
+
+        mainWidget.onElementSelected(-1);
+    });
+
+    $("#deleteEmployeeBtn").click(function () {
+        var element = mainWidget.elements[EMPLOYEE_ID].employee;
+
+        $.ajax({
+            url: "delete/employee",
+            method: 'GET',
+            data: element,
+            success: function (element) {
+                for (var i in mainWidget.elements) {
+                    var elementWidget = mainWidget.elements[i];
+
+                    if (elementWidget.employee.id == element.id) {
+                        delete mainWidget.elements[element.id];
+
+                        break;
+                    }
+                }
+
+                $("#elements").empty();
+
+                mainWidget.addEmployees(mainWidget.elements);
+
+                notification.showInfo(element.firstName + " was deleted...");
+            },
+            error: function () {
+                notification.showError("Can't delete employee...")
+            }
+        });
+    });
+
+    $("#saveMoreInfo").click(function () {
+        var employeeId = $("#infoEmployeeId").val();
+        var firstName = $("#infoEmployeeName").val();
+        var lastName = $("#infoEmployeeLName").val();
+
+        if (isNaN(employeeId)) {
+            notification.showError("Required number...");
+            return;
+        }
+
+        if (employeeId < 0) {
+            notification.showError("Must be above zero...");
+            return;
+        }
+
+        if (firstName.length == 0 || lastName.length == 0) {
+            notification.showError("Enter first and last name");
+            return;
+        }
+
+        var data = {id: employeeId, firstName: firstName, lastName: lastName};
+
+        $.ajax({
+            url: "add/employee",
+            method: 'POST',
+            data: data,
+            success: function (data) {
+                mainWidget.addEmployees([data]);
+
+                moreInfo.disableAddressForm(false);
+                notification.showInfo(firstName + " is added...");
+            },
+            error: function () {
+                notification.showError("Can't add employee...")
+            }
+        });
+    });
 
 }
 

@@ -113,7 +113,7 @@
     margin-right: 14px;
     margin-top: 12px;
     border-radius: 5px;
-    width: 230px;
+    width: 100px;
     border: 1px solid #2E6386;
     background: #173530;
     cursor: pointer;
@@ -126,9 +126,13 @@
 
 .addEmployeeLabel {
     float: left;
-    margin-left: 70px;
+    margin-left: 29px;
     margin-top: 5px;
     cursor: pointer;
+}
+
+.addBtnMargin{
+    margin-left: 36px !important;
 }
 
 .employeeTitle {

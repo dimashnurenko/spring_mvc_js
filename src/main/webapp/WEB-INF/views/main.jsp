@@ -11,10 +11,6 @@
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
     <c:url value="/resources/css/more_info.css" var="moreInfoCss"/>
-    <link rel="stylesheet" type="text/css" href="src/main/webapp/resources/css/more_info.css"/>
-    <link rel="stylesheet" type="text/css" href="src/main/webapp/resources/css/more_info.css"/>
-    <link rel="stylesheet" type="text/css" href="src/main/webapp/resources/css/more_info.css"/>
-    <link rel="stylesheet" type="text/css" href="src/main/webapp/resources/css/more_info.css"/>
     <link href="${moreInfoCss}" rel="stylesheet">
     <link href="${css}" rel="stylesheet">
     <link href="${registerCss}" rel="stylesheet">
@@ -43,8 +39,11 @@
                     <label class="employeesListTitle">Employee's list:</label>
                 </div>
 
+                <div id="deleteEmployeeBtn" class="addEmployeeBtn">
+                    <label class="addEmployeeLabel font">Delete</label>
+                </div>
                 <div id="addEmployeeBtn" class="addEmployeeBtn">
-                    <label class="addEmployeeLabel font">Add Employee</label>
+                    <label class="addEmployeeLabel font addBtnMargin">Add</label>
                 </div>
             </div>
             <div class="leftScroll">
@@ -73,9 +72,6 @@
                 <div class="buttonsPanelMainInfo">
                     <div id="saveMoreInfo" class="buttonAddress font">
                         <label class="infoBtn">Save</label>
-                    </div>
-                    <div id="deleteMoreInfo" class="buttonAddress font">
-                        <label class="infoBtn">Delete</label>
                     </div>
                 </div>
                 <div class="addressLabel font">Address:</div>

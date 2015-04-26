@@ -9,8 +9,7 @@ function Address(country, city, street, house, flat) {
     this.flat = flat;
 }
 
-function MoreInfo(notification) {
-    this.notification = notification;
+function MoreInfo() {
 }
 
 MoreInfo.prototype.showAddress = function (employeeId) {
@@ -21,28 +20,36 @@ MoreInfo.prototype.showAddress = function (employeeId) {
         data: {employeeId: employeeId},
         success: function (address) {
             if (!address) {
-                MoreInfo._setAddress("", "", "", "", "");
+                MoreInfo.prototype.setAddress("", "", "", "", "");
 
-                MoreInfo.notification.showError("Address undefined...");
+                new Notification().showInfo("Address undefined...");
                 return;
             }
 
-            MoreInfo._setAddress(address.country, address.city, address.street, address.house, address.flat);
+            MoreInfo.prototype.setAddress(address.country, address.city, address.street, address.house, address.flat);
         },
         error: function () {
-            MoreInfo._setAddress("", "", "", "", "");
+            MoreInfo.prototype.setAddress("", "", "", "", "");
 
-            MoreInfo.notification.showError("Address undefined...");
+            new Notification().showError("Address undefined...");
         }
     });
 };
 
-MoreInfo._setAddress = function (country, city, street, house, flat) {
+MoreInfo.prototype.setAddress = function (country, city, street, house, flat) {
     $("#country").val(country);
     $("#city").val(city);
     $("#street").val(street);
     $("#house").val(house);
     $("#flat").val(flat);
+};
+
+MoreInfo.prototype.disableAddressForm = function (isDisable) {
+    $("#country").prop("disabled", isDisable).val("save employee first");
+    $("#city").prop("disabled", isDisable).val("save employee first");
+    $("#street").prop("disabled", isDisable).val("save employee first");
+    $("#house").prop("disabled", isDisable).val("save employee first");
+    $("#flat").prop("disabled", isDisable).val("save employee first");
 };
 
 MoreInfo.prototype.showEmployeeInfo = function (employee) {
@@ -61,7 +68,7 @@ MoreInfo._deleteAddress = function (employeeId) {
         url: "/address/delete",
         data: {employeeId: employeeId},
         success: function () {
-            MoreInfo.notification.showInfo("Deleted address with id" + employeeId);
+            new Notification().showInfo("Deleted address with id" + employeeId);
 
             $("#country").val("");
             $("#city").val("");
@@ -70,10 +77,12 @@ MoreInfo._deleteAddress = function (employeeId) {
             $("#flat").val("");
         },
         error: function (x, y, error) {
-            MoreInfo.notification.showError(error);
+            new Notification().showError(error);
         }
     });
 };
+
+
 
 $("#saveAddress").click(function () {
     var country = $("#country").val();
@@ -89,10 +98,10 @@ $("#saveAddress").click(function () {
         url: "/address/save",
         data: {employeeId: $("#employeeId").text(), address: address},
         success: function () {
-            MoreInfo.notification.showInfo("Address saved...");
+            new Notification().showInfo("Address saved...");
         },
         error: function () {
-            MoreInfo.notification.showError("Can't save address...")
+            new Notification().showError("Can't save address...")
         }
     });
 });
