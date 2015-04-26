@@ -8,8 +8,9 @@ else if (window.attachEvent)
     window.attachEvent("onload", init);
 
 function init() {
-    var mainWidget = new MainWidget();
     var notification = new Notification();
+    var moreInfo = new MoreInfo(notification);
+    var mainWidget = new MainWidget();
 
     function getAllEmployees() {
         $.ajax({
@@ -283,6 +284,9 @@ function init() {
 
                 employeeWidget.select(id);
 
+                moreInfo.showAddress(id);
+                moreInfo.showEmployeeInfo(employeeWidget.employee);
+
                 continue;
             }
 
@@ -409,56 +413,6 @@ function init() {
 
             return image;
         }
-
-
-        //TODO get additional info
-        $("#showInfoBtn" + employeeId).click(function () {
-            $("#employeeId").text(employeeId);
-
-            $.ajax({
-                method: "GET",
-                url: "/info",
-                success: function (moreInfo) {
-                    var elements = $("#elements");
-
-                    var tableContent = elements.html();
-
-                    elements.empty();
-
-                    elements.html(moreInfo);
-
-                    $.getScript("/resources/js/more_info.js", function () {
-                        init();
-                    });
-
-                    $.ajax({
-                        method: "GET",
-                        url: "/address/get",
-                        data: {employeeId: employeeId},
-                        success: function (address) {
-                            $("#country").val(address.country);
-                            $("#city").val(address.city);
-                            $("#street").val(address.street);
-                            $("#house").val(address.house);
-                            $("#flat").val(address.flat);
-
-                            notification.showInfo("Info of " + employee.firstName + "...");
-                        },
-                        error: function () {
-                            notification.showError("Can't get address")
-                        }
-                    });
-
-                    $("#backBtn").click(function () {
-                        elements.html(tableContent);
-                        location.reload();
-                    });
-                },
-                error: function () {
-                    notification.showError("Can't show more info...")
-                }
-            });
-        });
     }
 
     ElementWidget.prototype.getId = function () {
@@ -477,14 +431,14 @@ function init() {
         $("#image" + id).addClass('selected');
         $("#flNames" + id).addClass('selected');
         $("#hiringDate" + id).addClass('selected');
-        $("#" + id).addClass('selected');
+        $("#" + id).addClass('rightShadow');
     };
 
     ElementWidget.prototype.unSelect = function (id) {
         $("#image" + id).removeClass('selected');
         $("#flNames" + id).removeClass('selected');
         $("#hiringDate" + id).removeClass('selected');
-        $("#" + id).removeClass('selected');
+        $("#" + id).removeClass('rightShadow');
     };
 
 }

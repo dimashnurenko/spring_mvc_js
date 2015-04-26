@@ -13,16 +13,19 @@
 .west {
     width: 20%;
     height: 60%;
-    background: green;
+    background: #272727;
     float: left;
 }
 
 .center {
-    width: 40%;
+    width: calc(40% - 1px);
     height: 60%;
     position: relative;
-    background: yellowgreen;
+    background: #173530;
     float: left;
+    border-top: 1px solid #2E6386;
+    border-bottom: 1px solid #2E6386;
+    border-right: 1px solid #2E6386;
 }
 
 .east {
@@ -45,7 +48,6 @@
 .firstLastName {
     width: 240px;
     height: 30px;
-    background: #272727;
 }
 
 .image {
@@ -62,6 +64,8 @@
 }
 
 .leftScroll {
+    width: 100%;
+    height: 100%;
     overflow-y: scroll;
     direction: rtl;
     background: #272727;
@@ -96,9 +100,18 @@
     background: #173530;
 }
 
+.rightShadow {
+    border-top: 1px solid #2E6386;
+    border-left: 1px solid #2E6386;
+    border-bottom: 1px solid #2E6386;
+    box-shadow: 1px 0 0 0 #173530;
+}
+
 .addEmployeeBtn {
     height: 30px;
-    margin-right: 10px;
+    float: right;
+    margin-right: 14px;
+    margin-top: 12px;
     border-radius: 5px;
     width: 230px;
     border: 1px solid #2E6386;
@@ -122,8 +135,6 @@
     height: 20px;
     width: 100%;
     background: #272727;
-    border-top: 1px solid #2E6386;
-    border-bottom: 1px solid #2E6386;
 }
 
 .font {
@@ -140,7 +151,7 @@
 .elements {
     width: 100%;
     height: 100%;
-    margin-top: 12px;
+    border-right: 1px solid #2E6386;
     background: #272727;
 }
 
@@ -162,4 +173,16 @@
 
 .registerPanelButton:active {
     opacity: 0.4;
+}
+
+.header {
+    border-right: 1px solid #2E6386;
+    float: right;
+}
+
+.employeeInfo {
+    height: 20px;
+    width: 100%;
+    margin-left: 12px;
+    margin-top: 6px;
 }

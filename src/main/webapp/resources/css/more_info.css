@@ -1,67 +1,12 @@
-.moreInfoGeneral {
-    width: 100%;
-    height: 100%;
-    background: #272A27;
-    border: 1px solid #173530;
-    box-shadow: inset -2px 0 0 0 #173530;
-}
-
-.backBtn {
-    position: absolute;
-    width: 110px;
-    height: 25px;
-    background: #173530;
-    cursor: pointer;
-    margin-top: 6px;
-    margin-left: 6px;
-    border-radius: 5px;
-    color: #FAFFBD;
-}
-
-.backBtn, .buttonAddress:hover {
-    box-shadow: 0 0 20px 0 #173530;
-    text-shadow: 0 0 1px 0 deepskyblue;
-}
-
-.backBtn, .buttonAddress:active {
-    background: #173530;
-    opacity: 0.7;
-}
-
 .moreInfo {
-    width: 100%;
-    height: 470px;
-    margin-top: 30px;
-}
-
-.backBtnImage {
-    width: 20px;
-    height: 20px;
-    float: left;
-    margin-left: 6px;
-    margin-top: 2px;
-}
-
-.backLabel {
-    float: left;
-    margin-left: 6px;
-    margin-top: 2px;
-    cursor: pointer;
-}
-
-.address {
-    width: 560px;
-    height: 200px;
-    margin-left: 18px;
-    margin-top: 37px;
-    border: 1px solid #173530;
+    width: calc(100% - 1px);
+    height: 100%;
 }
 
 .addressForm {
     float: left;
     width: 300px;
     height: 200px;
-    margin-top: 20px;
 }
 
 .formLabelAddress {
@@ -69,7 +14,6 @@
     width: 100px;
     margin-top: 14px;
     margin-left: 25px;
-    color: #AEAEAE;
 }
 
 .textFieldAddress {
@@ -81,29 +25,82 @@
     float: right;
     margin-right: 20px;
     margin-top: 12px;
-    background: #173530;
-    border: 1px solid #615050;
+    background: #272727;
+    border: 1px solid #2E6386;
 }
 
 .addressLabel {
+    width: calc(100% - 15px);
     margin-left: 12px;
-    position: absolute;
-    color: #AEAEAE;
+    margin-top: 24px;
+    float: left;
 }
 
 .buttonsPanelAddress {
     float: left;
-    margin-top: 100px;
+    margin-top: 76px;
 }
 
 .buttonAddress {
     width: 80px;
     height: 20px;
-    color: #AEAEAE;
     cursor: pointer;
-    background: #173530;
+    background: #272727;
+    border: 1px solid #2E6386;
     border-radius: 5px;
     margin-top: 20px;
     margin-left: 12px;
     text-align: center;
+}
+
+.buttonAddress:active {
+    opacity: 0.4;
+}
+
+.emplInfoLabel {
+    float: left;
+}
+
+.infoValue {
+    float: left;
+    height: 20px;
+    width: 100px;
+    margin-left: 6px;
+}
+
+.infoBtn {
+    cursor: pointer;
+}
+
+.splitter {
+    color: #2E6386;
+    margin-left: 95px;
+}
+
+.buttonsPanelMainInfo {
+    float: left;
+    margin-top: 10px;
+}
+
+.mainInfoForm {
+    float: left;
+    width: 300px;
+    height: 100px;
+}
+
+.scroll {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #272727;
+}
+
+::-webkit-scrollbar-button {
+    background-color: #2E6386;
 }
