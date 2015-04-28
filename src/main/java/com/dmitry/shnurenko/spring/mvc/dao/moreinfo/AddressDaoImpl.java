@@ -45,7 +45,7 @@ public class AddressDaoImpl implements AddressDao {
         try {
             con.setAutoCommit(false);
 
-            PreparedStatement getIds = con.prepareStatement(dbInfo.getQuery(GET_ALL_IDS));
+            PreparedStatement getIds = con.prepareStatement(dbInfo.getQuery(ADDRESS_GET_ALL_IDS));
             ResultSet resultSet = getIds.executeQuery();
 
             String nextQuery = dbInfo.getQuery(SAVE_ADDRESS);

@@ -12,6 +12,7 @@ public enum Queries {
     DELETE_EMPLOYEE("employee.delete"),
     UPDATE_EMPLOYEE("employee.update"),
     GET_ALL_EMPLOYEES("employee.get.all"),
+    EMPLOYEE_GET_ALL_IDS("employee.get.all.ids"),
     //  user
     SAVE_USER_TO_DB("user.save"),
     GET_LOGIN_USER("user.get.if.login"),
@@ -20,7 +21,7 @@ public enum Queries {
     UPDATE_ADDRESS("address.update"),
     DELETE_ADDRESS("address.delete"),
     GET_ADDRESS("address.get"),
-    GET_ALL_IDS("address.get.all.ids");
+    ADDRESS_GET_ALL_IDS("address.get.all.ids");
 
     private final String query;
 

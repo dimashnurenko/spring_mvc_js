@@ -4,6 +4,7 @@ import com.dmitry.shnurenko.spring.mvc.dao.employee.EmployeeDao;
 import com.dmitry.shnurenko.spring.mvc.entity.employees.Employee;
 import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import com.dmitry.shnurenko.spring.mvc.inject.EntityFactory;
+import com.dmitry.shnurenko.spring.mvc.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -48,12 +53,17 @@ public class MainController {
     @RequestMapping(value = "add/employee",
                     method = RequestMethod.POST,
                     produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody Employee addEmployee(@RequestParam("id") int id,
-                                              @RequestParam("firstName") String firstName,
-                                              @RequestParam("lastName") String lastName) throws DBException {
-        Employee employee = entityFactory.createManager(id, firstName, lastName);
+    public @ResponseBody Employee saveEmployee(@Nonnull HttpServletRequest request) throws DBException, SQLException {
+        Map<String, String> parameters = RequestUtil.getParameterMap(request);
 
-        employeeDao.save(employee);
+        int employeeId = Integer.parseInt(parameters.get("id"));
+
+        String firstName = parameters.get("firstName");
+        String lastName = parameters.get("lastName");
+
+        Employee employee = entityFactory.createManager(employeeId, firstName, lastName);
+
+        employeeDao.saveOrUpdate(employee);
 
         return employee;
     }

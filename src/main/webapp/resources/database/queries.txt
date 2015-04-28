@@ -1,8 +1,9 @@
 employee.get.by.id=SELECT * FROM employee where id=(?);
-employee.save=INSERT INTO employee (id,first_name,last_name) VALUES(?,?,?);
+employee.save=INSERT INTO employee (first_name,last_name,id) VALUES(?,?,?);
 employee.update=UPDATE employee SET first_name=?,last_name=? WHERE id=?;
 employee.delete=DELETE FROM employee WHERE id=?;
 employee.get.all=SELECT * FROM employee;
+employee.get.all.ids=SELECT id FROM employee;
 
 user.save=INSERT INTO user (login,password,email) VALUES(?,?,?);
 user.get.if.login=SELECT * FROM user where login=(?) AND password=(?);

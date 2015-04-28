@@ -97,24 +97,43 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     /** {inheritDoc} */
     @Override
-    public boolean save(@Nonnull Employee employee) throws DBException {
+    public boolean saveOrUpdate(@Nonnull Employee employee) throws DBException, SQLException {
+        int employeeId = employee.getId();
+
         Connection con = SqlLiteConnection.get();
 
         try {
-            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(SAVE_EMPLOYEE));
-            pstmt.setInt(1, employee.getId());
-            pstmt.setString(2, employee.getFirstName());
-            pstmt.setString(3, employee.getLastName());
+            con.setAutoCommit(false);
+
+            PreparedStatement getIds = con.prepareStatement(dbInfo.getQuery(EMPLOYEE_GET_ALL_IDS));
+            ResultSet resultSet = getIds.executeQuery();
+
+            String nextQuery = dbInfo.getQuery(SAVE_EMPLOYEE);
+
+            while (resultSet.next()) {
+                if (employeeId == resultSet.getInt(ID.toString())) {
+                    nextQuery = dbInfo.getQuery(UPDATE_EMPLOYEE);
+
+                    break;
+                }
+            }
+
+            PreparedStatement pstmt = con.prepareStatement(nextQuery);
+            pstmt.setInt(3, employeeId);
+
+            pstmt.setString(1, employee.getFirstName());
+            pstmt.setString(2, employee.getLastName());
 
             pstmt.execute();
 
-            return true;
-        } catch (SQLException e) {
-            close(con);
+            con.commit();
 
-            throw new DBException(e, "Can't save employee: " + e.getMessage());
-        } finally {
             close(con);
+            return true;
+        } catch (SQLException exception) {
+            con.rollback();
+            close(con);
+            throw new DBException(exception, "Can't save address");
         }
     }
 

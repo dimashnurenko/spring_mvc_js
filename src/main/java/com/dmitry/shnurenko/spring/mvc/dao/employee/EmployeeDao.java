@@ -6,6 +6,7 @@ import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public interface EmployeeDao {
      * @param employee employee which need save
      * @return <code>true</code> if employee is saved successfully, and <code>false</code> if exception is thrown
      */
-    boolean save(@Nonnull Employee employee) throws DBException;
+    boolean saveOrUpdate(@Nonnull Employee employee) throws DBException, SQLException;
 
     /**
      * Updates current employee in database.

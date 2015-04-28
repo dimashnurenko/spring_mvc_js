@@ -56,15 +56,13 @@ function init() {
         }
 
         var firstEntity = data[0];
-        var hasFirst = firstEntity.employee;
+        var hasFirst = firstEntity.hasOwnProperty(elementWidget.employee) ? firstEntity.employee : firstEntity;
 
         mainWidget.onElementSelected(hasFirst ? hasFirst.id : firstEntity.id);
     };
 
-    var EMPLOYEE_ID = 0;
-
     MainWidget.prototype.onElementSelected = function (id) {
-        EMPLOYEE_ID = id;
+        $("#employeeId").text(id);
         var elements = mainWidget.elements;
 
         for (var i in elements) {
@@ -246,7 +244,7 @@ function init() {
     });
 
     $("#deleteEmployeeBtn").click(function () {
-        var element = mainWidget.elements[EMPLOYEE_ID].employee;
+        var element = mainWidget.elements[$("#employeeId").text()].employee;
 
         $.ajax({
             url: "delete/employee",
@@ -268,12 +266,36 @@ function init() {
                 mainWidget.addEmployees(mainWidget.elements);
 
                 notification.showInfo(element.firstName + " was deleted...");
+
+                MainWidget.prototype.deleteAddress();
             },
             error: function () {
                 notification.showError("Can't delete employee...")
             }
         });
     });
+
+    MainWidget.prototype.deleteAddress = function () {
+        var employeeId = $("#employeeId").text();
+
+        $.ajax({
+            method: "POST",
+            url: "/address/delete",
+            data: {employeeId: employeeId},
+            success: function () {
+                new Notification().showInfo("Deleted address with id" + employeeId);
+
+                $("#country").val("");
+                $("#city").val("");
+                $("#street").val("");
+                $("#house").val("");
+                $("#flat").val("");
+            },
+            error: function (x, y, error) {
+                new Notification().showError(error);
+            }
+        });
+    };
 
     $("#saveMoreInfo").click(function () {
         var employeeId = $("#infoEmployeeId").val();
@@ -312,6 +334,43 @@ function init() {
             }
         });
     });
+
+    $("#saveAddress").click(function () {
+        var country = $("#country").val();
+        var city = $("#city").val();
+        var street = $("#street").val();
+        var house = $("#house").val();
+        var flat = $("#flat").val();
+
+        if (country.length == 0 || city.length == 0 || street.length == 0) {
+            notification.showError("Country, City, Street are required");
+            return;
+        }
+
+        if (isNaN(house) || isNaN(flat)) {
+            notification.showError("Incorrect input house or flat number");
+            return;
+        }
+
+        var address = {country: country, city: city, street: street, house: house, flat: flat};
+
+        $.ajax({
+            method: "POST",
+            url: "/address/save",
+            data: {employeeId: $("#employeeId").text(), address: address},
+            success: function () {
+                new Notification().showInfo("Address saved...");
+            },
+            error: function () {
+                new Notification().showError("Can't save address...")
+            }
+        });
+    });
+
+    $("#deleteAddress").click(function () {
+        MainWidget.prototype.deleteAddress();
+    });
+
 
 }
 
