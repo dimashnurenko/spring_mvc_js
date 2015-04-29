@@ -47,11 +47,7 @@
                 </div>
             </div>
             <div class="leftScroll">
-
-                <div id="elements" class="elements">
-
-                </div>
-
+                <div id="elements" class="elements"></div>
             </div>
 
         </div>
@@ -103,8 +99,8 @@
             </div>
         </div>
 
-        <div class="east">East
-
+        <div class="east">
+            <div id="notification" class="notification"></div>
         </div>
 
         <div class="south">South
