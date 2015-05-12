@@ -6,11 +6,9 @@ import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import com.dmitry.shnurenko.spring.mvc.inject.EntityFactory;
 import com.dmitry.shnurenko.spring.mvc.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
@@ -89,20 +87,6 @@ public class MainController {
         Employee employee = entityFactory.createManager(id, firstName, lastName);
 
         employeeDao.delete(employee);
-
-        return employee;
-    }
-
-    @RequestMapping(value = "update/employee",
-                    method = RequestMethod.GET,
-                    produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody Employee updateEmployee(@RequestParam("id") int id,
-                                                 @RequestParam("firstName") String firstName,
-                                                 @RequestParam("lastName") String lastName) throws DBException {
-
-        Employee employee = entityFactory.createManager(id, firstName, lastName);
-
-        employeeDao.update(employee);
 
         return employee;
     }

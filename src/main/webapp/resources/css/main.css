@@ -37,7 +37,7 @@
 }
 
 .south {
-    height: 40%;
+    height:5%;
     width: 100%;
     background: #272A27;
     float: left;
@@ -154,8 +154,6 @@
 }
 
 .elements {
-    width: 100%;
-    height: 100%;
     border-right: 1px solid #2E6386;
     background: #272727;
 }
@@ -190,4 +188,8 @@
     width: 100%;
     margin-left: 12px;
     margin-top: 6px;
+}
+
+.elementsPanel {
+    height: 270px;
 }

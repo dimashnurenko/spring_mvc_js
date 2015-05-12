@@ -36,6 +36,12 @@ MoreInfo.prototype.showAddress = function (employeeId) {
     });
 };
 
+MoreInfo.prototype.setMainInfo = function (INN, firstName, lastName) {
+    $("#infoEmployeeId").val(INN);
+    $("#infoEmployeeName").val(firstName);
+    $("#infoEmployeeLName").val(lastName);
+};
+
 MoreInfo.prototype.setAddress = function (country, city, street, house, flat) {
     $("#country").val(country);
     $("#city").val(city);

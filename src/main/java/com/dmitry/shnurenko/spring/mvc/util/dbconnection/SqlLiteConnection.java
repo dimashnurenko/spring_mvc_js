@@ -1,9 +1,9 @@
 package com.dmitry.shnurenko.spring.mvc.util.dbconnection;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,11 +11,15 @@ import java.sql.SQLException;
 /**
  * @author Dmitry Shnurenko
  */
-public class SqlLiteConnection {
+@Component("sqlLiteConnection")
+public class SqlLiteConnection implements DBConnection{
+    private static final String PATH_TO_DB = "jdbc:sqlite::resource:sqlite/db.db";
 
     private final static Logger LOGGER = Logger.getLogger(SqlLiteConnection.class);
 
-    static {
+    private Connection connection;
+
+    public SqlLiteConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -23,26 +27,22 @@ public class SqlLiteConnection {
         }
     }
 
-    private static Connection connection;
-
+    /** {inheritDoc} */
     @Nonnull
-    public static Connection get() {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite::resource:sqlite/db.db");
+    @Override
+    public Connection create() throws SQLException {
+        connection = DriverManager.getConnection(PATH_TO_DB);
 
-            if (connection == null) {
-                throw new IllegalStateException("Connection is null");
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-
-            close(connection);
+        if (connection == null) {
+            throw new IllegalStateException("Connection is null");
         }
 
         return connection;
     }
 
-    public static void close(@Nullable Connection connection) {
+    /** {inheritDoc} */
+    @Override
+    public void close() {
         try {
             if (connection != null) {
                 connection.close();

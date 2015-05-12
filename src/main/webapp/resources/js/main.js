@@ -206,18 +206,6 @@ function init() {
         }
     }
 
-    ElementWidget.prototype.getId = function () {
-        return $('#id' + this.employee.id).text();
-    };
-
-    ElementWidget.prototype.getFirstName = function () {
-        return $('#firstName' + this.employee.id).text();
-    };
-
-    ElementWidget.prototype.getLastName = function () {
-        return $('#lastName' + this.employee.id).text();
-    };
-
     ElementWidget.prototype.select = function (id) {
         $("#image" + id).addClass('selected');
         $("#flNames" + id).addClass('selected');
@@ -261,13 +249,15 @@ function init() {
                     }
                 }
 
+                moreInfo.setMainInfo("", "", "");
+
                 $("#elements").empty();
 
-                mainWidget.addEmployees(mainWidget.elements);
+                MainWidget.prototype.deleteAddress();
 
                 notification.showInfo(element.firstName + " was deleted...");
 
-                MainWidget.prototype.deleteAddress();
+                mainWidget.addEmployees(mainWidget.elements);
             },
             error: function () {
                 notification.showError("Can't delete employee...")
@@ -285,11 +275,7 @@ function init() {
             success: function () {
                 new Notification().showInfo("Deleted address with id" + employeeId);
 
-                $("#country").val("");
-                $("#city").val("");
-                $("#street").val("");
-                $("#house").val("");
-                $("#flat").val("");
+                moreInfo.setAddress("", "", "", "", "");
             },
             error: function (x, y, error) {
                 new Notification().showError(error);

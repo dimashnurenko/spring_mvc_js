@@ -3,7 +3,7 @@ package com.dmitry.shnurenko.spring.mvc.dao.user;
 import com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo;
 import com.dmitry.shnurenko.spring.mvc.entity.access.User;
 import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
-import com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection;
+import com.dmitry.shnurenko.spring.mvc.util.dbconnection.DBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo.PATH_TO_QUERIES;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.GET_LOGIN_USER;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.SAVE_USER_TO_DB;
-import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
 /**
  * Contains business logic which allows save user to database
@@ -25,15 +25,21 @@ import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnectio
 @Component("userDao")
 public class UserDaoImpl implements UserDao {
 
+    private final DBInfo       dbInfo;
+    private final DBConnection sqlLiteConnection;
+
     @Autowired
-    private DBInfo dbInfo;
+    public UserDaoImpl(DBInfo dbInfo, DBConnection sqlLiteConnection) {
+        this.dbInfo = dbInfo;
+        this.dbInfo.readQueriesFromFile(PATH_TO_QUERIES);
+        this.sqlLiteConnection = sqlLiteConnection;
+    }
 
     /** {inheritDoc} */
     @Override
     public void save(@Nonnull User user) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
         try {
+            Connection con = sqlLiteConnection.create();
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(SAVE_USER_TO_DB));
             pstmt.setString(1, user.getLogin());
             pstmt.setString(2, user.getPassword());
@@ -41,20 +47,19 @@ public class UserDaoImpl implements UserDao {
 
             pstmt.execute();
         } catch (SQLException e) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(e, "Can't save user to data base");
         } finally {
-            close(con);
+            sqlLiteConnection.close();
         }
     }
 
     /** {inheritDoc} */
     @Override
     public boolean isUserLogin(@Nonnull String login, @Nonnull String password) throws DBException {
-        Connection connection = SqlLiteConnection.get();
-
         try {
+            Connection connection = sqlLiteConnection.create();
             PreparedStatement pstmt = connection.prepareStatement(dbInfo.getQuery(GET_LOGIN_USER));
             pstmt.setString(1, login);
             pstmt.setString(2, password);
@@ -63,11 +68,11 @@ public class UserDaoImpl implements UserDao {
 
             return resultSet.next();
         } catch (SQLException e) {
-            close(connection);
+            sqlLiteConnection.close();
 
             throw new DBException(e, "Can't get user... " + e.getMessage());
         } finally {
-            close(connection);
+            sqlLiteConnection.close();
         }
     }
 }

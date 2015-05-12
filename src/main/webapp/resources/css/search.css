@@ -1,0 +1,21 @@
+.searchPanel {
+    margin-top: 12px;
+}
+
+.searchLabel {
+    float: left;
+    margin-left: 6px;
+}
+
+.searchField {
+    float: left;
+    margin-left: 12px;
+    border-radius: 3px;
+    border: 1px solid #2E6386;
+    background-color: #173530;
+    color: #AEAEAE;
+    padding-left: 6px;
+}
+
+.searchScroll {
+}

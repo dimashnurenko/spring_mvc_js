@@ -6,6 +6,9 @@ import javax.annotation.Nonnull;
  * @author Dmitry Shnurenko
  */
 public enum Queries {
+    //for tests
+    TEST("key.key"),
+
     //    employee
     GET_EMPLOYEE_BY_ID("employee.get.by.id"),
     SAVE_EMPLOYEE("employee.save"),

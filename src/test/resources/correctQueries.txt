@@ -1,0 +1,2 @@
+key.key=value1;
+key1.key=value2;

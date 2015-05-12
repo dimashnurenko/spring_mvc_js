@@ -4,7 +4,7 @@ import com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo;
 import com.dmitry.shnurenko.spring.mvc.entity.employees.Employee;
 import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import com.dmitry.shnurenko.spring.mvc.inject.EntityFactory;
-import com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection;
+import com.dmitry.shnurenko.spring.mvc.util.dbconnection.DBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +18,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo.PATH_TO_QUERIES;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.*;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.EmployeeTable.*;
-import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
 /**
  * The class contains methods which allows save,delete,update employees in database.
@@ -32,11 +32,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private final DBInfo        dbInfo;
     private final EntityFactory entityFactory;
+    private final DBConnection  sqlLiteConnection;
 
     @Autowired
-    public EmployeeDaoImpl(DBInfo dbInfo, EntityFactory entityFactory) {
+    public EmployeeDaoImpl(DBInfo dbInfo, EntityFactory entityFactory, DBConnection sqlLiteConnection) {
         this.dbInfo = dbInfo;
+        this.dbInfo.readQueriesFromFile(PATH_TO_QUERIES);
         this.entityFactory = entityFactory;
+        this.sqlLiteConnection = sqlLiteConnection;
     }
 
     /** {inheritDoc} */
@@ -44,10 +47,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public List<Employee> getAllEmployees() throws DBException {
         List<Employee> employees = new ArrayList<>();
-
-        Connection con = SqlLiteConnection.get();
-
         try {
+            Connection con = sqlLiteConnection.create();
+
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(GET_ALL_EMPLOYEES));
 
             ResultSet resultSet = pstmt.executeQuery();
@@ -58,11 +60,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
                                                           resultSet.getString(LAST_NAME.toString())));
             }
         } catch (SQLException e) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(e, "Can't get all employees: " + e.getMessage());
         } finally {
-            close(con);
+            sqlLiteConnection.close();
         }
 
         return employees;
@@ -72,9 +74,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Nullable
     @Override
     public Employee getById(@Nonnegative int id) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
         try {
+            Connection con = sqlLiteConnection.create();
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(GET_EMPLOYEE_BY_ID));
 
             pstmt.setInt(1, id);
@@ -87,11 +88,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
             return entityFactory.createManager(employeeId, firstName, lastName);
         } catch (SQLException e) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(e, "Can't get employee: " + e.getMessage());
         } finally {
-            close(con);
+            sqlLiteConnection.close();
         }
     }
 
@@ -100,9 +101,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public boolean saveOrUpdate(@Nonnull Employee employee) throws DBException, SQLException {
         int employeeId = employee.getId();
 
-        Connection con = SqlLiteConnection.get();
-
+        Connection con = sqlLiteConnection.create();
         try {
+
             con.setAutoCommit(false);
 
             PreparedStatement getIds = con.prepareStatement(dbInfo.getQuery(EMPLOYEE_GET_ALL_IDS));
@@ -128,59 +129,32 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
             con.commit();
 
-            close(con);
+            sqlLiteConnection.close();
             return true;
         } catch (SQLException exception) {
             con.rollback();
-            close(con);
+
+            sqlLiteConnection.close();
             throw new DBException(exception, "Can't save address");
         }
     }
 
     /** {inheritDoc} */
-    @Nonnull
     @Override
-    public Employee update(@Nonnull Employee employee) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
+    public void delete(@Nonnull Employee employee) throws DBException {
         try {
-            PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(UPDATE_EMPLOYEE));
-            pstmt.setString(1, employee.getFirstName());
-            pstmt.setString(2, employee.getLastName());
-            pstmt.setInt(3, employee.getId());
+            Connection con = sqlLiteConnection.create();
 
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            close(con);
-
-            throw new DBException(e, "Can't update employee: " + e.getMessage());
-        } finally {
-            close(con);
-        }
-
-        return employee;
-    }
-
-    /** {inheritDoc} */
-    @Nonnull
-    @Override
-    public Employee delete(@Nonnull Employee employee) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
-        try {
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(DELETE_EMPLOYEE));
             pstmt.setInt(1, employee.getId());
 
             pstmt.execute();
-
         } catch (SQLException e) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(e, "Can't delete employee: " + e.getMessage());
         } finally {
-            close(con);
+            sqlLiteConnection.close();
         }
-
-        return employee;
     }
 }

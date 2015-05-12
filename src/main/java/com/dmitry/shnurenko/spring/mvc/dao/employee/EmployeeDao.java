@@ -40,19 +40,10 @@ public interface EmployeeDao {
     boolean saveOrUpdate(@Nonnull Employee employee) throws DBException, SQLException;
 
     /**
-     * Updates current employee in database.
-     *
-     * @param employee employee which need update
-     * @return an instance of updated {@link Employee}
-     */
-    @Nonnull Employee update(@Nonnull Employee employee) throws DBException;
-
-    /**
      * Deletes current employee from database.
      *
      * @param employee employee which need delete
-     * @return an instance of deleted {@link Employee}
      */
-    @Nonnull Employee delete(@Nonnull Employee employee) throws DBException;
+    void delete(@Nonnull Employee employee) throws DBException;
 
 }

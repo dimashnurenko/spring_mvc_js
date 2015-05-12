@@ -4,7 +4,7 @@ import com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo;
 import com.dmitry.shnurenko.spring.mvc.entity.moreinfo.Address;
 import com.dmitry.shnurenko.spring.mvc.exceptions.DBException;
 import com.dmitry.shnurenko.spring.mvc.inject.EntityFactory;
-import com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection;
+import com.dmitry.shnurenko.spring.mvc.util.dbconnection.DBConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.DBInfo.PATH_TO_QUERIES;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.Queries.*;
 import static com.dmitry.shnurenko.spring.mvc.dao.dbmetadata.tables.AddressTable.*;
-import static com.dmitry.shnurenko.spring.mvc.util.dbconnection.SqlLiteConnection.close;
 
 /**
  * The class contains methods which allows store employee's address.
@@ -30,17 +30,20 @@ public class AddressDaoImpl implements AddressDao {
 
     private final DBInfo        dbInfo;
     private final EntityFactory entityFactory;
+    private final DBConnection  sqlLiteConnection;
 
     @Autowired
-    public AddressDaoImpl(DBInfo dbInfo, EntityFactory entityFactory) {
+    public AddressDaoImpl(DBInfo dbInfo, EntityFactory entityFactory, DBConnection sqlLiteConnection) {
         this.dbInfo = dbInfo;
+        this.dbInfo.readQueriesFromFile(PATH_TO_QUERIES);
         this.entityFactory = entityFactory;
+        this.sqlLiteConnection = sqlLiteConnection;
     }
 
     /** {inheritDoc} */
     @Override
     public void saveOrUpdate(@Nonnegative int employeeId, @Nonnull Address address) throws DBException, SQLException {
-        Connection con = SqlLiteConnection.get();
+        Connection con = sqlLiteConnection.create();
 
         try {
             con.setAutoCommit(false);
@@ -71,10 +74,11 @@ public class AddressDaoImpl implements AddressDao {
 
             con.commit();
 
-            close(con);
+            sqlLiteConnection.close();
         } catch (SQLException exception) {
             con.rollback();
-            close(con);
+
+            sqlLiteConnection.close();
             throw new DBException(exception, "Can't save address");
         }
     }
@@ -83,9 +87,8 @@ public class AddressDaoImpl implements AddressDao {
     @Override
     @Nullable
     public Address get(@Nonnegative int employeeId) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
         try {
+            Connection con = sqlLiteConnection.create();
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(GET_ADDRESS));
 
             pstmt.setInt(1, employeeId);
@@ -101,29 +104,28 @@ public class AddressDaoImpl implements AddressDao {
 
             return entityFactory.createAddress(country, city, street, house, flat);
         } catch (SQLException exception) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(exception, "Can't get address...");
         } finally {
-            close(con);
+            sqlLiteConnection.close();
         }
     }
 
     /** {inheritDoc} */
     @Override
     public void delete(@Nonnegative int employeeId) throws DBException {
-        Connection con = SqlLiteConnection.get();
-
         try {
+            Connection con = sqlLiteConnection.create();
             PreparedStatement pstmt = con.prepareStatement(dbInfo.getQuery(DELETE_ADDRESS));
 
             pstmt.setInt(1, employeeId);
 
             pstmt.execute();
 
-            close(con);
+            sqlLiteConnection.close();
         } catch (SQLException exception) {
-            close(con);
+            sqlLiteConnection.close();
 
             throw new DBException(exception, "Can't delete address");
         }
