@@ -108,11 +108,11 @@
         <div class="east">
             <div id="notification" class="notification"></div>
             <div class="searchPanel">
-                <div class="searchLabel font">Search:</div>
+                <div class="searchLabel font">Quick Search:</div>
                 <input class="searchField" id="searchField" type="text">
 
                 <div class="searchScroll">
-                    <div id="searchedElements"></div>
+                    <div id="searchedElements" class="searchedElements"></div>
                 </div>
             </div>
         </div>

@@ -19,3 +19,25 @@
 
 .searchScroll {
 }
+
+.searchedElements {
+    position: absolute;
+    margin-top: 19px;
+    float: left;
+    margin-left: 112px;
+    width: 177px;
+    background: #173530;
+}
+
+.foundedElement {
+    text-align: center;
+    cursor: pointer;
+}
+
+.foundedElement:active {
+    opacity: 0.4;
+}
+
+.foundedElement:hover {
+    background: #2E6386;
+}

@@ -29,7 +29,9 @@ function init() {
 
     //----main widget object------
     function MainWidget() {
-        $("#searchField").keyup(function () {
+        var searchField = $("#searchField");
+
+        searchField.keyup(function () {
             mainWidget.searchElement();
         });
 
@@ -86,7 +88,9 @@ function init() {
     };
 
     MainWidget.prototype.searchElement = function () {
-        var searchResultPanel = $("#searchResult");
+        var searchResultPanel = $("#searchedElements");
+
+        searchResultPanel.css("display", "block");
 
         searchResultPanel.empty();
 
@@ -106,7 +110,7 @@ function init() {
 
                 if (isIdMatch(value.toString(), employeeId.toString())) {
 
-                    new SearchingElement(++divId, employeeId);
+                    new SearchingElement(++divId, employeeId, mainWidget);
                 }
             } else {
                 var employeeName = employee.firstName;
@@ -129,38 +133,6 @@ function init() {
             return generalId.indexOf(inputId) + 1;
         }
     };
-
-    function SearchingElement(id, valueToSet) {
-        this.id = id;
-
-        $("#searchResult").append('<div id="_' + id + '" class="foundedElement">');
-
-        var searchingElement = $('#_' + id);
-
-        searchingElement.click(function () {
-            for (var index in mainWidget.elements) {
-                var employeeWidget = mainWidget.elements[index];
-
-                if (isNaN(valueToSet)) {
-                    var name = employeeWidget.employee.firstName;
-
-                    if (valueToSet === name) {
-                        mainWidget.onElementSelected(employeeWidget.employee.id);
-
-                        return;
-                    }
-                }
-
-                var id = employeeWidget.employee.id;
-
-                if (valueToSet == id) {
-                    mainWidget.onElementSelected(id);
-                }
-            }
-        });
-
-        searchingElement.text(valueToSet);
-    }
 
     //---- employee entity---
     function Employee(id, firstName, lastName) {
