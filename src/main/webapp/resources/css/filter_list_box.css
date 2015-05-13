@@ -1,0 +1,73 @@
+.filterLBMain {
+    width: 200px;
+    position: absolute;
+    margin-top: 19px;
+    margin-left: 117px;
+}
+
+.labelLB {
+    float: left;
+    margin-left: 6px;
+    margin-top: 12px;
+}
+
+.filterEntry {
+    height: 20px;
+    width: 177px;
+    background-color: #173530;
+    cursor: pointer;
+    text-align: center;
+}
+
+.filterEntry:hover {
+    background-color: #2E6386;
+}
+
+.filterEntry:active {
+    opacity: 0.4;
+}
+
+.filterInput {
+    float: right;
+    margin-left: 12px;
+    margin-top: 10px;
+    border-radius: 3px;
+    border: 1px solid #2E6386;
+    background-color: #173530;
+    color: #AEAEAE;
+    padding-left: 6px;
+}
+
+.filter {
+    float: left;
+    width: 320px;
+    margin-top: 20px;
+}
+
+.filterButtons {
+    width: 220px;
+    height: 60px;
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 150px;
+}
+
+.applyFilterLabel {
+    position: absolute;
+    margin-left: 14px;
+    margin-top: 1px;
+    cursor: pointer;
+}
+
+.filterButton {
+    float: left;
+    width: 65px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #173530;
+    border: 1px solid #2E6386;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-left: 12px;
+    text-align: center;
+}

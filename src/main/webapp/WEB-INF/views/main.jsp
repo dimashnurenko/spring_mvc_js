@@ -5,11 +5,13 @@
     <c:url value="/resources/css/notification.css" var="notificationCss"/>
     <c:url value="/resources/css/register.css" var="registerCss"/>
     <c:url value="/resources/css/search.css" var="searchCss"/>
+    <c:url value="/resources/css/filter_list_box.css" var="listBoxCss"/>
     <c:url value="/resources/js/main.js" var="js"/>
     <c:url value="/resources/js/notification.js" var="notificationJS"/>
     <c:url value="/resources/js/register.js" var="registerJs"/>
     <c:url value="/resources/js/more_info.js" var="more_infoJs"/>
     <c:url value="/resources/js/search.js" var="searchJS"/>
+    <c:url value="/resources/js/filter_list_box.js" var="listBoxJS"/>
     <c:url value="/resources/js/libraries/jquery-2.1.3.js" var="jquery"/>
     <c:url value="/resources/js/libraries/jquery-ui.min.js" var="jqueryUI"/>
     <c:url value="/resources/css/more_info.css" var="moreInfoCss"/>
@@ -18,6 +20,7 @@
     <link href="${registerCss}" rel="stylesheet">
     <link href="${notificationCss}" rel="stylesheet">
     <link href="${searchCss}" rel="stylesheet">
+    <link href="${listBoxCss}" rel="stylesheet">
     <script src="${jquery}" type="text/javascript"></script>
     <script src="${more_infoJs}" type="text/javascript"></script>
     <script src="${searchJS}" type="text/javascript"></script>
@@ -25,7 +28,8 @@
     <script src="${jqueryUI}" type="text/javascript"></script>
     <script src="${js}" type="text/javascript"></script>
     <script src="${registerJs}" type="text/javascript"></script>
-    <title>spring_js</title>
+    <script src="${listBoxJS}" type="text/javascript"></script>
+    <title>employees data base</title>
 </head>
 <body>
 <div id="employeeId" hidden="hidden"></div>
@@ -109,10 +113,22 @@
             <div id="notification" class="notification"></div>
             <div class="searchPanel">
                 <div class="searchLabel font">Quick Search:</div>
-                <input class="searchField" id="searchField" type="text">
+                <input class="searchField" id="searchField" type="text" placeholder="enter id">
 
                 <div class="searchScroll">
                     <div id="searchedElements" class="searchedElements"></div>
+                </div>
+
+                <div id="filter" class="filter">
+                </div>
+
+                <div id="filterButtons" class="filterButtons">
+                    <div id="applyFilter" class="filterButton font">
+                        <div class="applyFilterLabel">Apply</div>
+                    </div>
+                    <div id="resetFilter" class="filterButton font">
+                        <div class="applyFilterLabel">Reset</div>
+                    </div>
                 </div>
             </div>
         </div>

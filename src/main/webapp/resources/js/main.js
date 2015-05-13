@@ -12,6 +12,12 @@ function init() {
     var moreInfo = new MoreInfo(notification);
     var mainWidget = new MainWidget();
 
+    var filterByName = new FilterListBox("filterByName", $("#filter"), mainWidget.elements);
+    filterByName.setLabel("Filter by Name:");
+
+    var filterByCountry = new FilterListBox("filterByCountry", $("#filter"), mainWidget.elements);
+    filterByCountry.setLabel("Filter by Country:");
+
     function getAllEmployees() {
         $.ajax({
             url: "get/all",
