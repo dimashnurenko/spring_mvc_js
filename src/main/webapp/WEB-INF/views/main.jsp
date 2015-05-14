@@ -122,14 +122,6 @@
                 <div id="filter" class="filter">
                 </div>
 
-                <div id="filterButtons" class="filterButtons">
-                    <div id="applyFilter" class="filterButton font">
-                        <div class="applyFilterLabel">Apply</div>
-                    </div>
-                    <div id="resetFilter" class="filterButton font">
-                        <div class="applyFilterLabel">Reset</div>
-                    </div>
-                </div>
             </div>
         </div>
 

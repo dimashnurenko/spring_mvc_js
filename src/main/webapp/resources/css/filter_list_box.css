@@ -43,31 +43,3 @@
     width: 320px;
     margin-top: 20px;
 }
-
-.filterButtons {
-    width: 220px;
-    height: 60px;
-    position: absolute;
-    margin-top: 100px;
-    margin-left: 150px;
-}
-
-.applyFilterLabel {
-    position: absolute;
-    margin-left: 14px;
-    margin-top: 1px;
-    cursor: pointer;
-}
-
-.filterButton {
-    float: left;
-    width: 65px;
-    height: 20px;
-    cursor: pointer;
-    background-color: #173530;
-    border: 1px solid #2E6386;
-    border-radius: 5px;
-    margin-top: 20px;
-    margin-left: 12px;
-    text-align: center;
-}

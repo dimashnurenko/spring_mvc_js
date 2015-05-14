@@ -16,7 +16,7 @@ function init() {
     filterByName.setLabel("Filter by Name:");
 
     var filterByCountry = new FilterListBox("filterByCountry", $("#filter"), mainWidget.elements);
-    filterByCountry.setLabel("Filter by Country:");
+    filterByCountry.setLabel("Filter by Post:");
 
     function getAllEmployees() {
         $.ajax({
