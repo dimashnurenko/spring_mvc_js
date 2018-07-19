@@ -19,8 +19,8 @@ import java.util.Properties;
 @Component("googleMailSenderBuilder")
 public class GoogleMailSenderBuilder implements MailSenderBuilder {
 
-    private static final String FROM     = "dimashnurenko@gmail.com";
-    private static final String PASSWORD = "QW3esd@P7";
+    private static final String FROM     = "";
+    private static final String PASSWORD = "";
     private static final String HOST     = "smtp.gmail.com";
 
     private final MimeMessage message;
